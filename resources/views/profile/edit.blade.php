@@ -1,175 +1,135 @@
 <x-layout title="My Profile — Gaply">
 
-    {{-- Flash --}}
-    @if (session('success'))
-        <div id="flash-msg" class="mb-6 flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium"
-            style="background:var(--color-success-bg);color:var(--color-success-text);">
-            <span class="material-symbols-outlined" style="font-size:18px;">check_circle</span>
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div class="mb-8">
-        <h1 class="font-display font-black" style="font-size:32px;color:var(--color-text-primary);">My Profile</h1>
-        <p class="mt-1 text-sm" style="color:var(--color-text-secondary);">Manage your professional info and career goals.</p>
+    <!-- HEADER -->
+    <div class="mb-10 space-y-2">
+        <h1 class="font-display font-black text-4xl text-white tracking-tight">My Profile</h1>
+        <p class="text-sm text-textSecondary">Manage your professional credentials, target role, and technical competencies.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        {{-- ── LEFT COLUMN ── --}}
-        <div class="lg:col-span-2 space-y-6">
-
-            {{-- Section A: Basic Info --}}
-            <div class="rounded-xl border p-6" style="background:var(--color-surface);border-color:var(--color-border);">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-[20px]" style="color:var(--color-primary);">badge</span>
-                    <h2 class="text-lg font-semibold" style="color:var(--color-text-primary);">Professional Info</h2>
+    <!-- MAIN TWO-COLUMN LAYOUT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- LEFT COLUMN: Professional Info & Skills (2/3 width) -->
+        <div class="lg:col-span-8 space-y-8">
+            
+            <!-- SECTION 1: Professional Info Form -->
+            <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 md:p-8 shadow-xl space-y-6">
+                <div class="flex items-center gap-3 border-b border-darkBorder/40 pb-4">
+                    <span class="material-symbols-outlined text-oceanBlue text-2xl">badge</span>
+                    <h3 class="font-display font-bold text-lg text-white">Professional Details</h3>
                 </div>
 
-                @if ($errors->has('specialization') || $errors->has('bio') || $errors->has('profile_image'))
-                    <div class="mb-4 flex items-start gap-2 p-4 rounded-xl text-sm"
-                        style="background:var(--color-danger-bg);color:var(--color-danger-text);">
-                        <span class="material-symbols-outlined shrink-0" style="font-size:18px;">error</span>
-                        <ul class="list-disc list-inside space-y-0.5">
-                            @foreach ($errors->only(['specialization','bio','profile_image']) as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
-                    {{-- Profile photo --}}
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color:var(--color-text-secondary);">Profile Photo</p>
-                        <div class="flex items-center gap-4">
-                            <img id="img-preview"
-                                src="{{ $user->profile_image ? Storage::url($user->profile_image) : 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=232A5C&color=fff&size=128' }}"
-                                alt="{{ $user->name }}"
-                                class="w-20 h-20 rounded-full object-cover"
-                                style="border:2px solid var(--color-border);">
-                            <div>
-                                <label for="profile_image"
-                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-medium cursor-pointer"
-                                    style="border-color:var(--color-border);color:var(--color-text-primary);background:var(--color-bg);">
-                                    <span class="material-symbols-outlined" style="font-size:18px;">upload</span>
-                                    Choose Photo
-                                </label>
-                                <input id="profile_image" type="file" name="profile_image"
-                                    accept="image/jpg,image/jpeg,image/png" class="hidden"
-                                    onchange="document.getElementById('img-preview').src=URL.createObjectURL(event.target.files[0])">
-                                <p class="text-xs mt-1.5" style="color:var(--color-text-secondary);">JPG or PNG · max 2 MB</p>
-                            </div>
+                    <!-- Profile Photo with JS Preview -->
+                    <div class="flex flex-col sm:flex-row items-center gap-6">
+                        <div class="relative group">
+                            <img id="profile-preview" 
+                                 src="{{ $user->profile_image ? Storage::url($user->profile_image) : 'https://ui-avatars.com/api/?name='.urlencode($user->name).'&background=2d74b3&color=fff&size=128' }}" 
+                                 alt="{{ $user->name }}" 
+                                 class="w-24 h-24 rounded-full object-cover border-2 border-darkBorder group-hover:border-oceanBlue/50 transition-all duration-300">
+                            
+                            <label for="profile_image" class="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <span class="material-symbols-outlined text-white text-xl">upload</span>
+                            </label>
+                            <input id="profile_image" type="file" name="profile_image" accept="image/jpg,image/jpeg,image/png" class="hidden"
+                                   onchange="document.getElementById('profile-preview').src=URL.createObjectURL(event.target.files[0])">
+                        </div>
+                        <div class="text-center sm:text-left space-y-1">
+                            <p class="text-sm font-bold text-white">Avatar Profile Image</p>
+                            <p class="text-xs text-textSecondary">JPG or PNG. Max size 2MB. Click on the image to upload a new one.</p>
                         </div>
                     </div>
 
-                    {{-- Specialization --}}
-                    <div>
-                        <label for="specialization" class="block text-xs font-semibold uppercase tracking-wider mb-1.5"
-                            style="color:var(--color-text-secondary);">Specialization</label>
-                        <input id="specialization" name="specialization" type="text"
-                            value="{{ old('specialization', $user->specialization) }}"
-                            placeholder="e.g. Computer Science, Information Technology…"
-                            class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-all"
-                            style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);"
-                            onfocus="this.style.borderColor='var(--color-primary)'"
-                            onblur="this.style.borderColor='var(--color-border)'">
-                        @error('specialization')
-                            <p class="text-xs mt-1" style="color:var(--color-danger-text);">{{ $message }}</p>
-                        @enderror
+                    <!-- Specialization Input -->
+                    <div class="space-y-1.5">
+                        <label for="specialization" class="block text-[10px] font-bold uppercase tracking-wider text-textSecondary">Professional Specialization</label>
+                        <input id="specialization" name="specialization" type="text" 
+                               value="{{ old('specialization', $user->specialization) }}" 
+                               placeholder="e.g. Fullstack Engineer, Laravel Backend Specialist..." 
+                               class="w-full px-4 py-3 rounded-xl border border-darkBorder bg-darkBg/30 text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
                     </div>
 
-                    {{-- Bio --}}
-                    <div>
-                        <label for="bio" class="block text-xs font-semibold uppercase tracking-wider mb-1.5"
-                            style="color:var(--color-text-secondary);">Bio</label>
-                        <textarea id="bio" name="bio" rows="4"
-                            placeholder="Your experience, skills you're proud of, career aspirations…"
-                            class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none transition-all resize-none"
-                            style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);"
-                            onfocus="this.style.borderColor='var(--color-primary)'"
-                            onblur="this.style.borderColor='var(--color-border)'">{{ old('bio', $user->bio) }}</textarea>
-                        @error('bio')
-                            <p class="text-xs mt-1" style="color:var(--color-danger-text);">{{ $message }}</p>
-                        @enderror
+                    <!-- Bio Textarea -->
+                    <div class="space-y-1.5">
+                        <label for="bio" class="block text-[10px] font-bold uppercase tracking-wider text-textSecondary">Professional Biography</label>
+                        <textarea id="bio" name="bio" rows="4" 
+                                  placeholder="Summarize your years of experience, core technical achievements, or career roadmap goals..." 
+                                  class="w-full px-4 py-3 rounded-xl border border-darkBorder bg-darkBg/30 text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all resize-none">{{ old('bio', $user->bio) }}</textarea>
                     </div>
 
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95"
-                            style="background:var(--color-primary);color:#fff;">
-                            <span class="material-symbols-outlined" style="font-size:18px;">save</span>
-                            Save Changes
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="px-6 py-3 rounded-xl text-sm font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium hover:shadow-glowBlue transition-all active:scale-[0.98] flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base">save</span>
+                            Save Details
                         </button>
                     </div>
                 </form>
             </div>
 
-            {{-- Section B: Skills --}}
-            <div class="rounded-xl border p-6" style="background:var(--color-surface);border-color:var(--color-border);">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-[20px]" style="color:var(--color-primary);">bolt</span>
-                    <h2 class="text-lg font-semibold" style="color:var(--color-text-primary);">My Skills</h2>
+            <!-- SECTION 2: Skills Management Card -->
+            <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 md:p-8 shadow-xl space-y-8">
+                <div class="flex items-center gap-3 border-b border-darkBorder/40 pb-4">
+                    <span class="material-symbols-outlined text-oceanBlue text-2xl">bolt</span>
+                    <h3 class="font-display font-bold text-lg text-white">My Technical Skills</h3>
                 </div>
 
-                @if ($errors->has('skill_id') || $errors->has('level'))
-                    <div class="mb-4 flex items-start gap-2 p-4 rounded-xl text-sm"
-                        style="background:var(--color-danger-bg);color:var(--color-danger-text);">
-                        <span class="material-symbols-outlined shrink-0" style="font-size:18px;">error</span>
-                        <ul class="list-disc list-inside space-y-0.5">
-                            @foreach ($errors->only(['skill_id','level']) as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                {{-- Skills list --}}
+                <!-- Acquired Skills list -->
                 @if ($userSkills->isEmpty())
-                    <div class="py-10 text-center">
-                        <span class="material-symbols-outlined" style="font-size:40px;color:var(--color-border);">psychology</span>
-                        <p class="text-sm mt-2" style="color:var(--color-text-secondary);">No skills yet. Add your first one below.</p>
+                    <div class="py-12 text-center space-y-4 rounded-xl border border-dashed border-darkBorder/50 bg-darkBg/10">
+                        <span class="material-symbols-outlined text-5xl text-textSecondary/20">psychology</span>
+                        <div class="space-y-1">
+                            <p class="text-sm font-bold text-white">No skills added yet</p>
+                            <p class="text-xs text-textSecondary max-w-xs mx-auto">Select a skill from the list below and configure its master level to initialize your analysis profile.</p>
+                        </div>
                     </div>
                 @else
-                    <div class="space-y-2 mb-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @foreach ($userSkills as $us)
-                            <div class="flex items-center justify-between px-4 py-3 rounded-xl border"
-                                style="background:var(--color-bg);border-color:var(--color-border);">
-                                <div class="flex items-center gap-3 min-w-0">
-                                    <span class="material-symbols-outlined" style="font-size:18px;color:var(--color-success);">check_circle</span>
-                                    <div class="min-w-0">
-                                        <p class="text-sm font-semibold truncate" style="color:var(--color-text-primary);">{{ $us->skill->name }}</p>
+                            <div class="p-4 rounded-xl border border-darkBorder bg-darkBg/40 hover:border-oceanBlue/30 hover:bg-darkBg/80 transition-all duration-300 flex items-center justify-between group">
+                                <div class="space-y-1.5 min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-accentTeal shadow-glowBlue"></span>
+                                        <p class="text-sm font-bold text-white truncate">{{ $us->skill->name }}</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
                                         @if ($us->skill->category)
-                                            <p class="text-xs" style="color:var(--color-text-secondary);">{{ $us->skill->category }}</p>
+                                            <span class="text-[9px] font-semibold uppercase tracking-wider text-textSecondary bg-darkCard px-2 py-0.5 rounded border border-darkBorder/40">
+                                                {{ $us->skill->category }}
+                                            </span>
+                                        @endif
+                                        
+                                        <!-- Skill Level Tag color-coded -->
+                                        @if ($us->level->value === 'advanced')
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-accentTeal bg-accentTeal/10 px-2 py-0.5 rounded">
+                                                Advanced
+                                            </span>
+                                        @elseif ($us->level->value === 'intermediate')
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">
+                                                Intermediate
+                                            </span>
+                                        @else
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-textSecondary/70 bg-darkCard px-2 py-0.5 rounded">
+                                                Beginner
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2 shrink-0">
-                                    {{-- Level badge --}}
-                                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full"
-                                        style="{{ match($us->level->value) {
-                                            'beginner'     => 'background:var(--color-warning-bg);color:var(--color-warning-text)',
-                                            'intermediate' => 'background:var(--color-coral-bg);color:var(--color-coral-text)',
-                                            default        => 'background:var(--color-success-bg);color:var(--color-success-text)',
-                                        } }}">
-                                        {{ ucfirst($us->level->value) }}
-                                    </span>
-                                    {{-- Edit --}}
-                                    <button type="button"
-                                        onclick="openEditModal({{ $us->id }}, '{{ $us->level->value }}')"
-                                        class="p-1.5 rounded-lg transition-colors"
-                                        style="color:var(--color-text-secondary);">
-                                        <span class="material-symbols-outlined" style="font-size:18px;">edit</span>
+
+                                <!-- Actions -->
+                                <div class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <!-- Edit Trigger -->
+                                    <button type="button" onclick="openEditModal({{ $us->id }}, '{{ $us->level->value }}')" class="p-2 rounded-lg hover:bg-darkCard hover:text-oceanBlue text-textSecondary transition-colors" title="Edit Level">
+                                        <span class="material-symbols-outlined text-lg">edit</span>
                                     </button>
-                                    {{-- Delete --}}
-                                    <form action="{{ route('profile.skills.destroy', $us) }}" method="POST"
-                                        onsubmit="return confirm('Remove {{ addslashes($us->skill->name) }}?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-lg transition-colors"
-                                            style="color:var(--color-text-secondary);">
-                                            <span class="material-symbols-outlined" style="font-size:18px;">delete</span>
+
+                                    <!-- Delete action -->
+                                    <form action="{{ route('profile.skills.destroy', $us) }}" method="POST" onsubmit="return confirm('Remove {{ $us->skill->name }} from profile?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="p-2 rounded-lg hover:bg-red-500/10 hover:text-red-400 text-textSecondary transition-colors" title="Remove Skill">
+                                            <span class="material-symbols-outlined text-lg">delete</span>
                                         </button>
                                     </form>
                                 </div>
@@ -178,147 +138,151 @@
                     </div>
                 @endif
 
-                {{-- Add skill --}}
-                <div class="pt-4 border-t" style="border-color:var(--color-border);">
-                    <p class="text-xs font-semibold uppercase tracking-wider mb-3" style="color:var(--color-text-secondary);">Add a Skill</p>
-                    <form action="{{ route('profile.skills.store') }}" method="POST" class="flex flex-wrap gap-3 items-end">
+                <hr class="border-darkBorder/40">
+
+                <!-- Add Skill Form Inline -->
+                <div class="space-y-4">
+                    <h4 class="text-xs font-mono font-bold uppercase tracking-wider text-textSecondary">Add New Skill Capability</h4>
+                    <form action="{{ route('profile.skills.store') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end bg-darkBg/20 p-5 rounded-2xl border border-darkBorder/40">
                         @csrf
-                        <div class="flex-1 min-w-[180px]">
-                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1.5" style="color:var(--color-text-secondary);">Skill</label>
-                            <select name="skill_id"
-                                class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none appearance-none"
-                                style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);"
-                                onfocus="this.style.borderColor='var(--color-primary)'"
-                                onblur="this.style.borderColor='var(--color-border)'">
-                                <option value="">Select skill…</option>
+                        
+                        <div class="sm:col-span-6 space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-textSecondary">Select Skill</label>
+                            <select name="skill_id" class="w-full px-4 py-2.5 rounded-xl border border-darkBorder bg-darkCard text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                                <option value="">Choose skill...</option>
                                 @foreach ($allSkills as $skill)
                                     <option value="{{ $skill->id }}" {{ old('skill_id') == $skill->id ? 'selected' : '' }}>
-                                        {{ $skill->name }}{{ $skill->category ? ' — '.$skill->category : '' }}
+                                        {{ $skill->name }}{{ $skill->category ? ' ('.$skill->category.')' : '' }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="min-w-[150px]">
-                            <label class="block text-xs font-semibold uppercase tracking-wider mb-1.5" style="color:var(--color-text-secondary);">Level</label>
-                            <select name="level"
-                                class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none appearance-none"
-                                style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);"
-                                onfocus="this.style.borderColor='var(--color-primary)'"
-                                onblur="this.style.borderColor='var(--color-border)'">
-                                <option value="">Level…</option>
-                                <option value="beginner"     {{ old('level') === 'beginner'     ? 'selected' : '' }}>Beginner</option>
+
+                        <div class="sm:col-span-4 space-y-1.5">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-textSecondary">Expertise Level</label>
+                            <select name="level" class="w-full px-4 py-2.5 rounded-xl border border-darkBorder bg-darkCard text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                                <option value="">Level...</option>
+                                <option value="beginner" {{ old('level') === 'beginner' ? 'selected' : '' }}>Beginner</option>
                                 <option value="intermediate" {{ old('level') === 'intermediate' ? 'selected' : '' }}>Intermediate</option>
-                                <option value="advanced"     {{ old('level') === 'advanced'     ? 'selected' : '' }}>Advanced</option>
+                                <option value="advanced" {{ old('level') === 'advanced' ? 'selected' : '' }}>Advanced</option>
                             </select>
                         </div>
-                        <button type="submit"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95"
-                            style="background:var(--color-accent);color:#fff;">
-                            <span class="material-symbols-outlined" style="font-size:18px;">add</span>
-                            Add
-                        </button>
+
+                        <div class="sm:col-span-2">
+                            <button type="submit" class="w-full py-3.5 rounded-xl text-xs font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium transition-all active:scale-[0.98] flex items-center justify-center gap-1.5">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                                Add
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        {{-- ── RIGHT COLUMN ── --}}
-        <div class="space-y-6">
-
-            {{-- Target Job --}}
-            <div class="rounded-xl border p-6" style="background:var(--color-surface);border-color:var(--color-border);">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="material-symbols-outlined text-[20px]" style="color:var(--color-primary);">track_changes</span>
-                    <h2 class="text-lg font-semibold" style="color:var(--color-text-primary);">Target Job</h2>
+        <!-- RIGHT COLUMN: Target Job & Account Details (1/3 width) -->
+        <div class="lg:col-span-4 space-y-8">
+            
+            <!-- Target Job update Form -->
+            <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 md:p-8 shadow-xl space-y-6">
+                <div class="flex items-center gap-3 border-b border-darkBorder/40 pb-4">
+                    <span class="material-symbols-outlined text-oceanBlue text-2xl">track_changes</span>
+                    <h3 class="font-display font-bold text-lg text-white">Target Job</h3>
                 </div>
-                <p class="text-sm mb-4" style="color:var(--color-text-secondary);">
-                    The role you're working towards — used to analyse your skill gap.
+
+                <p class="text-xs text-textSecondary leading-relaxed">
+                    Set the specific engineering profile or career you are targeting. This is dynamically calculated to output your job readiness index.
                 </p>
-                @error('target_job')
-                    <div class="mb-3 p-3 rounded-xl text-sm" style="background:var(--color-danger-bg);color:var(--color-danger-text);">{{ $message }}</div>
-                @enderror
-                <form action="{{ route('profile.target-job.update') }}" method="POST" class="space-y-3">
+
+                <form action="{{ route('profile.target-job.update') }}" method="POST" class="space-y-4">
                     @csrf
-                    <select name="target_job"
-                        class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none appearance-none"
-                        style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);"
-                        onfocus="this.style.borderColor='var(--color-primary)'"
-                        onblur="this.style.borderColor='var(--color-border)'">
-                        <option value="">Select a job title…</option>
-                        @foreach ($jobTitles as $title)
-                            <option value="{{ $title }}" {{ $user->target_job === $title ? 'selected' : '' }}>{{ $title }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit"
-                        class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95"
-                        style="background:var(--color-primary);color:#fff;">
-                        <span class="material-symbols-outlined" style="font-size:18px;">check</span>
-                        Set Target Job
+                    <div class="space-y-1.5">
+                        <select name="target_job" class="w-full px-4 py-2.5 rounded-xl border border-darkBorder bg-darkBg/30 text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                            <option value="">Select target role...</option>
+                            @foreach ($jobTitles as $title)
+                                <option value="{{ $title }}" {{ $user->target_job === $title ? 'selected' : '' }}>{{ $title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-xl text-xs font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">check</span>
+                        Update Target Role
                     </button>
                 </form>
+
                 @if ($user->target_job)
-                    <div class="mt-4 flex items-center gap-2 px-3 py-2.5 rounded-xl"
-                        style="background:var(--color-coral-bg);">
-                        <span class="material-symbols-outlined" style="font-size:18px;color:var(--color-coral-text);">work</span>
-                        <span class="text-sm font-semibold" style="color:var(--color-coral-text);">{{ $user->target_job }}</span>
+                    <div class="flex items-center gap-3 p-4 rounded-xl border border-oceanBlue/20 bg-oceanBlue/5">
+                        <div class="w-8 h-8 rounded-lg bg-oceanBlue/10 flex items-center justify-center text-oceanBlue shrink-0">
+                            <span class="material-symbols-outlined text-lg">work</span>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-[9px] font-mono font-bold text-oceanBlue uppercase tracking-wider">Active Target</p>
+                            <p class="text-sm font-bold text-white truncate">{{ $user->target_job }}</p>
+                        </div>
                     </div>
                 @endif
             </div>
 
-            {{-- Account Summary --}}
-            <div class="rounded-xl border p-6" style="background:var(--color-surface);border-color:var(--color-border);">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="material-symbols-outlined text-[20px]" style="color:var(--color-primary);">manage_accounts</span>
-                    <h2 class="text-lg font-semibold" style="color:var(--color-text-primary);">Account</h2>
+            <!-- Account Details summary -->
+            <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 md:p-8 shadow-xl space-y-6">
+                <div class="flex items-center gap-3 border-b border-darkBorder/40 pb-4">
+                    <span class="material-symbols-outlined text-oceanBlue text-2xl">manage_accounts</span>
+                    <h3 class="font-display font-bold text-lg text-white">Account Details</h3>
                 </div>
-                <div class="space-y-3">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider" style="color:var(--color-text-secondary);">Name</p>
-                        <p class="text-sm font-semibold mt-0.5" style="color:var(--color-text-primary);">{{ $user->name }}</p>
+
+                <div class="space-y-4 text-xs">
+                    <div class="flex justify-between items-center py-2 border-b border-darkBorder/20">
+                        <span class="text-textSecondary font-semibold">User Name</span>
+                        <span class="font-bold text-white">{{ $user->name }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider" style="color:var(--color-text-secondary);">Email</p>
-                        <p class="text-sm mt-0.5 truncate" style="color:var(--color-text-primary);">{{ $user->email }}</p>
+                    <div class="flex justify-between items-center py-2 border-b border-darkBorder/20">
+                        <span class="text-textSecondary font-semibold">Email Address</span>
+                        <span class="font-bold text-white truncate max-w-[150px]">{{ $user->email }}</span>
                     </div>
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider" style="color:var(--color-text-secondary);">Member Since</p>
-                        <p class="text-sm mt-0.5 font-mono" style="color:var(--color-text-primary);">{{ $user->created_at->format('M d, Y') }}</p>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-textSecondary font-semibold">Registered Since</span>
+                        <span class="font-mono text-white">{{ $user->created_at->format('M d, Y') }}</span>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
-    {{-- Edit skill modal --}}
-    <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center"
-        style="background:rgba(0,0,0,0.5);">
-        <div class="rounded-2xl border shadow-2xl p-8 w-full max-w-sm"
-            style="background:var(--color-surface);border-color:var(--color-border);">
-            <h3 class="text-lg font-semibold mb-5" style="color:var(--color-text-primary);">Update Skill Level</h3>
+    <!-- EDIT SKILL MODAL DIALOG (BLUR BACKDROP GLASSMORPHISM) -->
+    <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" onclick="closeEditModal()"></div>
+        
+        <!-- Modal Card -->
+        <div class="rounded-2xl border border-darkBorder bg-darkCard p-8 w-full max-w-sm relative z-10 shadow-2xl space-y-6">
+            <div class="space-y-1">
+                <h3 class="font-display font-bold text-lg text-white">Update Skill Mastery</h3>
+                <p class="text-xs text-textSecondary">Update your estimated master level for this skill.</p>
+            </div>
+            
             <form id="edit-form" method="POST" class="space-y-4">
-                @csrf @method('PATCH')
-                <select name="level" id="edit-level"
-                    class="w-full px-4 py-2.5 rounded-lg border text-sm outline-none appearance-none"
-                    style="background:var(--color-surface);border-color:var(--color-border);color:var(--color-text-primary);">
+                @csrf
+                @method('PATCH')
+                <select name="level" id="edit-level" class="w-full px-4 py-3 rounded-xl border border-darkBorder bg-darkBg text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
                 </select>
-                <button type="submit"
-                    class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold active:scale-95"
-                    style="background:var(--color-primary);color:#fff;">
-                    <span class="material-symbols-outlined" style="font-size:18px;">save</span>
-                    Save
-                </button>
-                <button type="button" onclick="closeEditModal()"
-                    class="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border text-sm font-semibold"
-                    style="border-color:var(--color-border);color:var(--color-text-secondary);background:transparent;">
-                    Cancel
-                </button>
+                
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="flex-1 py-3 rounded-xl text-xs font-bold border border-darkBorder text-textSecondary hover:text-white transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 py-3 rounded-xl text-xs font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium transition-all">
+                        Save Changes
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- Modal Event Handler -->
     <script>
         const editModal = document.getElementById('edit-modal');
         const editForm  = document.getElementById('edit-form');
@@ -328,13 +292,8 @@
             document.getElementById('edit-level').value = level;
             editModal.style.display = 'flex';
         }
-        function closeEditModal() { editModal.style.display = 'none'; }
-        editModal.addEventListener('click', e => { if (e.target === editModal) closeEditModal(); });
-
-        const flash = document.getElementById('flash-msg');
-        if (flash) {
-            setTimeout(() => { flash.style.transition = 'opacity 0.5s'; flash.style.opacity = '0'; }, 3500);
-            setTimeout(() => flash.remove(), 4000);
+        function closeEditModal() { 
+            editModal.style.display = 'none'; 
         }
     </script>
 </x-layout>
