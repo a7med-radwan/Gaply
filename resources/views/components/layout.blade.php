@@ -18,12 +18,12 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#090d16',
-                        darkCard: '#101726',
-                        darkBorder: '#1e293b',
-                        oceanBlue: '#2d74b3',
-                        oceanHover: '#3a86c8',
-                        accentTeal: '#10B981',
+                        darkBg: '#050811',
+                        darkCard: '#0c1220',
+                        darkBorder: '#1f2937',
+                        oceanBlue: '#38bdf8',
+                        oceanHover: '#0ea5e9',
+                        accentTeal: '#0ea5e9',
                         textPrimary: '#ffffff',
                         textSecondary: '#94a3b8'
                     },
@@ -33,8 +33,8 @@
                         mono: ['"JetBrains Mono"', 'monospace']
                     },
                     boxShadow: {
-                        premium: '0 0 50px -12px rgba(45, 116, 179, 0.25)',
-                        glowBlue: '0 0 20px rgba(45, 116, 179, 0.25)'
+                        premium: '0 0 50px -12px rgba(56, 189, 248, 0.2)',
+                        glowBlue: '0 0 20px rgba(56, 189, 248, 0.25)'
                     }
                 }
             }
@@ -44,7 +44,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #090d16;
+            background-color: #050811;
             color: #ffffff;
         }
         .font-display {
@@ -112,7 +112,7 @@
         <!-- User profile summary & logout -->
         <div class="p-4 border-t border-darkBorder/40 bg-darkBg/20 space-y-4">
             <div class="flex items-center gap-3 px-2">
-                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=2d74b3&color=fff&size=100' }}" 
+                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=38bdf8&color=fff&size=100' }}" 
                      alt="{{ auth()->user()->name }}" 
                      class="w-9 h-9 rounded-full object-cover border border-darkBorder">
                 <div class="min-w-0">
@@ -135,8 +135,8 @@
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 z-20 hidden lg:hidden"></div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-1 min-w-0 flex flex-col min-h-screen">
-        <div class="flex-1 p-6 md:p-10 lg:p-12 max-w-7xl w-full mx-auto">
+    <main class="flex-1 min-w-0 flex flex-col min-h-screen lg:min-h-0 lg:h-screen lg:overflow-hidden">
+        <div class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto lg:h-full lg:overflow-hidden">
             {{ $slot }}
         </div>
     </main>

@@ -18,12 +18,12 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#090d16',
-                        darkCard: '#101726',
-                        darkBorder: '#1e293b',
-                        oceanBlue: '#2d74b3',
-                        oceanHover: '#3a86c8',
-                        accentTeal: '#10B981',
+                        darkBg: '#050811',
+                        darkCard: '#0c1220',
+                        darkBorder: '#1f2937',
+                        oceanBlue: '#38bdf8',
+                        oceanHover: '#0ea5e9',
+                        accentTeal: '#0ea5e9',
                         textPrimary: '#ffffff',
                         textSecondary: '#94a3b8'
                     },
@@ -40,7 +40,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #090d16;
+            background-color: #050811;
             color: #ffffff;
         }
         .font-display {
@@ -94,12 +94,12 @@
 <body class="min-h-screen flex items-stretch overflow-x-hidden selection:bg-oceanBlue selection:text-white">
 
     <!-- LEFT HALF: Form Section (50%) -->
-    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-[#090d16] relative z-10">
+    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-[#050811] relative z-10">
         
         <!-- Logo Header -->
         <div class="flex items-center justify-between logo-transition">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-lg bg-gradient-to-br from-oceanBlue to-[#1e40af] shadow-md shadow-oceanBlue/20">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-lg bg-gradient-to-br from-oceanBlue to-[#0ea5e9] shadow-md shadow-oceanBlue/20">
                     G
                 </div>
                 <span class="font-display font-black text-2xl tracking-tight text-white group-hover:text-oceanBlue transition-colors duration-300">Gaply</span>
@@ -182,7 +182,7 @@
     </div>
 
     <!-- RIGHT HALF: Showcase Panel (50%) -->
-    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-[#06090e] border-l border-darkBorder/40 showcase-transition">
+    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-[#050811] border-l border-darkBorder/40 showcase-transition">
         <!-- Background elements -->
         <div class="absolute inset-0 bg-grid-pattern radial-fade-mask opacity-40 pointer-events-none"></div>
         <div class="absolute top-[30%] left-[30%] w-[500px] h-[500px] rounded-full opacity-[0.06] blur-[100px] pointer-events-none bg-oceanBlue"></div>
@@ -210,7 +210,7 @@
                         <div class="relative flex items-center justify-center shrink-0">
                             <svg class="w-24 h-24 transform -rotate-90">
                                 <circle cx="48" cy="48" r="40" stroke="#1c2538" stroke-width="6" fill="transparent" />
-                                <circle cx="48" cy="48" r="40" stroke="#2d74b3" stroke-width="6" fill="transparent"
+                                <circle cx="48" cy="48" r="40" stroke="#38bdf8" stroke-width="6" fill="transparent"
                                     stroke-dasharray="251" 
                                     stroke-dashoffset="251"
                                     stroke-linecap="round"
