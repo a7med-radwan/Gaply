@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CareerPlanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkillController;
@@ -20,4 +21,9 @@ Route::middleware('auth')->group(function () {
 
     // Dedicated User Skills (Resource Routes)
     Route::resource('skills', SkillController::class)->except(['create', 'show']);
+
+    // Career Gap Analysis Plan
+    Route::get('/career-plan', [CareerPlanController::class, 'index'])->name('career-plan.index');
+    Route::post('/career-plan/generate', [CareerPlanController::class, 'generate'])->name('career-plan.generate');
+    Route::patch('/career-plan/{careerPlan}/complete', [CareerPlanController::class, 'complete'])->name('career-plan.complete');
 });

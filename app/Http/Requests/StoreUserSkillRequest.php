@@ -16,24 +16,15 @@ class StoreUserSkillRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'skill_name' => ['required', 'string', 'max:255'],
+            'skill_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('skills', 'name')->where(function ($query) {
+                    return $query->where('user_id', $this->user()->id);
+                }),
+            ],
             'level' => ['required', Rule::enum(SkillLevel::class)],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     */
-    public function withValidator($validator): void
-    {
-        $validator->after(function ($validator) {
-            $skillName = trim($this->skill_name);
-            if (empty($skillName)) {
-                return;
-            }
-            if ($this->user()->skills()->where('name', $skillName)->exists()) {
-                $validator->errors()->add('skill_name', 'You have already added this skill to your profile.');
-            }
-        });
     }
 }

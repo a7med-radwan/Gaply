@@ -34,7 +34,8 @@ class User extends Authenticatable
         return $this->hasMany(Skill::class);
     }
 
-    /**
-     * Returns our custom Notification model, NOT Laravel's built-in notifications.
-     */
+    public function careerPlans(): HasMany
+    {
+        return $this->hasMany(CareerPlan::class);
+    }
 }

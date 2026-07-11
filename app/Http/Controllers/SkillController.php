@@ -28,7 +28,7 @@ class SkillController extends Controller
     public function store(StoreUserSkillRequest $request): RedirectResponse
     {
         auth()->user()->skills()->create([
-            'name' => trim($request->skill_name),
+            'name' => $request->skill_name,
             'level' => $request->level,
         ]);
 
@@ -53,7 +53,7 @@ class SkillController extends Controller
         abort_if($skill->user_id !== auth()->id(), 403);
 
         $skill->update([
-            'name' => trim($request->skill_name),
+            'name' => $request->skill_name,
             'level' => $request->level,
         ]);
 
