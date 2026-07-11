@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,16 +10,14 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // Professional profile
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile/skills', [ProfileController::class, 'storeSkill'])->name('profile.skills.store');
-    Route::patch('/profile/skills/{userSkill}', [ProfileController::class, 'updateSkill'])->name('profile.skills.update');
-    Route::delete('/profile/skills/{userSkill}', [ProfileController::class, 'destroySkill'])->name('profile.skills.destroy');
-    Route::post('/profile/target-job', [ProfileController::class, 'updateTargetJob'])->name('profile.target-job.update');
+    // Dashboard route
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Placeholder routes — redirect to profile until those features are built
-    Route::get('/dashboard', fn() => redirect()->route('profile'))->name('dashboard');
-    Route::get('/tasks', fn() => redirect()->route('profile'))->name('tasks.index');
-    Route::get('/tasks/create', fn() => redirect()->route('profile'))->name('tasks.create');
+    // Professional Profile (Individual Routes)
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Dedicated User Skills (Resource Routes)
+    Route::resource('skills', SkillController::class)->except(['create', 'show']);
 });

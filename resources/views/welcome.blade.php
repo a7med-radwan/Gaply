@@ -196,35 +196,18 @@
                     <span
                         class="absolute bottom-0 left-0 w-0 h-0.5 bg-oceanBlue transition-all group-hover:w-full"></span>
                 </a>
-                <a href="https://github.com/a7med-radwan/Roadmap" target="_blank"
-                    class="hover:text-white transition-colors duration-200 relative group py-2">
-                    Source Code
-                    <span
-                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-oceanBlue transition-all group-hover:w-full"></span>
-                </a>
             </nav>
 
             <!-- Authentication Actions -->
             <div class="flex items-center gap-4">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}"
-                            class="px-5 py-2.5 rounded-xl text-sm font-bold text-white border border-darkBorder hover:border-oceanBlue hover:bg-darkCard/50 transition-all duration-300">
-                            Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="px-4 py-2 text-sm font-bold text-textSecondary hover:text-white transition-colors duration-200">
-                            Log in
-                        </a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}"
-                                class="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium hover:shadow-glowBlue transition-all duration-300 active:scale-[0.98]">
-                                Get Started
-                            </a>
-                        @endif
-                    @endauth
-                @endif
+                <a href="{{ route('login') }}"
+                    class="px-4 py-2 text-sm font-bold text-textSecondary hover:text-white transition-colors duration-200">
+                    Log in
+                </a>
+                <a href="{{ route('register') }}"
+                    class="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium hover:shadow-glowBlue transition-all duration-300 active:scale-[0.98]">
+                    Get Started
+                </a>
             </div>
         </div>
     </header>

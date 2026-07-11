@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'username', 'specialization', 'bio', 'profile_image', 'target_job'])]
+#[Fillable(['name', 'email', 'password', 'username', 'experience', 'profile_image', 'target_job'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -29,26 +29,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function userSkills(): HasMany
+    public function skills(): HasMany
     {
-        return $this->hasMany(UserSkill::class);
-    }
-
-    public function skillGapReports(): HasMany
-    {
-        return $this->hasMany(SkillGapReport::class);
-    }
-
-    public function developmentPlans(): HasMany
-    {
-        return $this->hasMany(DevelopmentPlan::class);
+        return $this->hasMany(Skill::class);
     }
 
     /**
      * Returns our custom Notification model, NOT Laravel's built-in notifications.
      */
-    public function appNotifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
 }

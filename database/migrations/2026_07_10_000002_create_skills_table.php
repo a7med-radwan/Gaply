@@ -12,9 +12,12 @@ return new class extends Migration {
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('category')->nullable();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->enum('level', ['beginner', 'intermediate', 'advanced']);
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
         });
     }
 

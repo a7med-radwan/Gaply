@@ -14,15 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string('username')->unique();
-            $table->string('avatar')->nullable();
-            $table->char('country_code', 2)->nullable();
-            $table->string('timezone')->default('UTC');
-            $table->enum('status', ['active', 'inactive', 'suspended'])
-                ->default('active');
             $table->timestamps();
         });
 

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\SkillLevel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Skill extends Model
 {
@@ -11,27 +12,26 @@ class Skill extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'name',
-        'category',
+        'level',
     ];
 
-    public function userSkills(): HasMany
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->hasMany(UserSkill::class);
+        return [
+            'level' => SkillLevel::class,
+        ];
     }
 
-    public function jobSkills(): HasMany
+    /**
+     * Get the user that owns this skill.
+     */
+    public function user(): BelongsTo
     {
-        return $this->hasMany(JobSkill::class);
-    }
-
-    public function skillGapItems(): HasMany
-    {
-        return $this->hasMany(SkillGapItem::class);
-    }
-
-    public function planTasks(): HasMany
-    {
-        return $this->hasMany(PlanTask::class);
+        return $this->belongsTo(User::class);
     }
 }
