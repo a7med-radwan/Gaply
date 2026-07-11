@@ -35,8 +35,7 @@
 
                         <!-- File Input -->
                         <input id="profile_image" type="file" name="profile_image"
-                            accept="image/jpg,image/jpeg,image/png" class="hidden"
-                            onchange="const url = URL.createObjectURL(event.target.files[0]); document.getElementById('profile-preview').src = url; const sidebar = document.getElementById('sidebar-avatar'); if(sidebar) { sidebar.src = url; }">
+                            accept="image/jpg,image/jpeg,image/png" class="hidden">
                     </div>
 
                     <div class="space-y-1">
@@ -153,4 +152,23 @@
         </div>
     </form>
 
+    <script>
+        document.getElementById('profile_image').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const url = URL.createObjectURL(this.files[0]);
+                
+                // Update main profile settings card image preview
+                const preview = document.getElementById('profile-preview');
+                if (preview) {
+                    preview.src = url;
+                }
+                
+                // Update sidebar navigation user avatar preview
+                const sidebar = document.getElementById('sidebar-avatar');
+                if (sidebar) {
+                    sidebar.src = url;
+                }
+            }
+        });
+    </script>
 </x-layout>

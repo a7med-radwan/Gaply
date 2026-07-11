@@ -127,7 +127,7 @@
         <!-- User profile summary & logout -->
         <div class="p-4 border-t border-darkBorder/40 bg-darkBg/20 space-y-4">
             <div class="flex items-center gap-3 px-2">
-                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=38bdf8&color=fff&size=100' }}"
+                <img id="sidebar-avatar" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=38bdf8&color=fff&size=100' }}"
                     alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover border border-darkBorder">
                 <div class="min-w-0">
                     <p class="text-xs font-bold text-white truncate">{{ auth()->user()->name }}</p>
