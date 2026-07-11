@@ -103,7 +103,7 @@
                                 </p>
                             </div>
 
-                            @if ($careerPlan->status === 'active')
+                            @if ($careerPlan->status->value === 'active')
                                 <form action="{{ route('career-plan.complete', $careerPlan) }}" method="POST" class="mt-1">
                                     @csrf
                                     @method('PATCH')
