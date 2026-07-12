@@ -178,15 +178,34 @@
                     </div>
 
                     {{-- IMPROVEMENT PLAN --}}
-                    <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 space-y-4">
-                        <div class="flex items-center gap-2 border-b border-darkBorder/40 pb-3">
-                            <span class="material-symbols-outlined text-accentTeal text-lg">rocket_launch</span>
-                            <h2 class="font-display font-bold text-sm text-white">Your Improvement Plan</h2>
-                            <span class="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-accentTeal bg-accentTeal/10 border border-accentTeal/20">
-                                AI Generated
-                            </span>
+                    <div class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-darkBorder/40 pb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-accentTeal text-lg">rocket_launch</span>
+                                <h2 class="font-display font-bold text-sm text-white">Your Improvement Plan</h2>
+                                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-accentTeal bg-accentTeal/10 border border-accentTeal/20">
+                                    AI Generated
+                                </span>
+                            </div>
+                            
+                            <!-- Toggle Button -->
+                            <button type="button" id="toggle-plan-view" class="text-xs font-bold text-oceanBlue hover:text-white px-3 py-1.5 rounded-xl border border-darkBorder/60 hover:bg-darkBg/50 transition-all flex items-center justify-center gap-1.5 self-start sm:self-auto">
+                                <span class="material-symbols-outlined text-[16px]" id="toggle-view-icon">article</span>
+                                <span id="toggle-view-label">Show Raw Text</span>
+                            </button>
                         </div>
-                        <div id="plan-content" class="prose-content text-sm text-textSecondary leading-relaxed">
+
+                        <!-- Timeline View -->
+                        <div id="timeline-view-container" class="space-y-6">
+                            <!-- Tabs dynamic -->
+                            <div id="month-tabs" class="flex flex-wrap gap-2"></div>
+                            
+                            <!-- Timeline dynamic -->
+                            <div id="timeline-content" class="border-l-2 border-darkBorder/40 pl-6 ml-3.5 space-y-8 relative py-2"></div>
+                        </div>
+
+                        <!-- Raw View -->
+                        <div id="raw-view-container" class="hidden prose-content text-sm text-textSecondary leading-relaxed">
                             {!! nl2br(e($careerPlan->improvement_plan)) !!}
                         </div>
                     </div>
@@ -235,6 +254,7 @@
     </style>
 
     <script>
+        // Form Loading Logic
         const form = document.getElementById('generate-form');
         const overlay = document.getElementById('loading-overlay');
         const btn = document.getElementById('generate-btn');
@@ -250,6 +270,211 @@
                 label.textContent = 'Analyzing...';
             });
         }
-    </script>
 
+        // Timeline Parser and Renderer
+        @if ($careerPlan)
+        (function() {
+            try {
+                // Safely fetch and decode plan content using base64 to avoid syntax errors
+                const planText = atob(`{{ base64_encode($careerPlan->improvement_plan) }}`);
+
+                function parseImprovementPlan(text) {
+                    const lines = text.split('\n');
+                    const months = [];
+                    let currentMonth = null;
+                    let currentWeek = null;
+
+                    for (let line of lines) {
+                        line = line.trim();
+                        if (!line) continue;
+
+                        // Month Detection
+                        const monthMatch = line.match(/^(?:###|#|##|\*\*)\s*Month\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^Month\s*(\d+)[:\-]?\s*(.*)$/i);
+                        if (monthMatch) {
+                            currentMonth = {
+                                number: monthMatch[1],
+                                title: monthMatch[2].replace(/\*\*|#/g, '').trim(),
+                                weeks: []
+                            };
+                            months.push(currentMonth);
+                            currentWeek = null;
+                            continue;
+                        }
+
+                        // Week Detection
+                        const weekMatch = line.match(/^(?:-|-\s*\*\*|\*\*|###)\s*Week\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^Week\s*(\d+)[:\-]?\s*(.*)$/i);
+                        if (weekMatch) {
+                            if (!currentMonth) {
+                                currentMonth = { number: "1", title: "General Path", weeks: [] };
+                                months.push(currentMonth);
+                            }
+                            currentWeek = {
+                                number: weekMatch[1],
+                                title: weekMatch[2].replace(/\*\*|#/g, '').trim(),
+                                items: []
+                            };
+                            currentMonth.weeks.push(currentWeek);
+                            continue;
+                        }
+
+                        // Item Detection
+                        const itemMatch = line.match(/^(?:-|\*)\s*\*\*(.*?)\*\*[:\-]?\s*(.*)$/) || line.match(/^\*\*(.*?)\*\*[:\-]?\s*(.*)$/);
+                        if (itemMatch && currentWeek) {
+                            currentWeek.items.push({
+                                type: itemMatch[1].trim(),
+                                content: itemMatch[2].trim()
+                            });
+                            continue;
+                        }
+
+                        // Text continuation fallback
+                        if (currentWeek) {
+                            if (currentWeek.items.length > 0) {
+                                currentWeek.items[currentWeek.items.length - 1].content += ' ' + line.replace(/^-|^\*/, '').trim();
+                            } else {
+                                currentWeek.items.push({
+                                    type: 'Note',
+                                    content: line.replace(/^-|^\*/, '').trim()
+                                });
+                            }
+                        } else if (currentMonth) {
+                            if (!currentMonth.description) currentMonth.description = '';
+                            currentMonth.description += line + '\n';
+                        }
+                    }
+                    return months;
+                }
+
+                const parsedMonths = parseImprovementPlan(planText);
+                
+                const monthTabsContainer = document.getElementById('month-tabs');
+                const timelineContent = document.getElementById('timeline-content');
+                const timelineView = document.getElementById('timeline-view-container');
+                const rawView = document.getElementById('raw-view-container');
+                const toggleBtn = document.getElementById('toggle-plan-view');
+                const toggleIcon = document.getElementById('toggle-view-icon');
+                const toggleLabel = document.getElementById('toggle-view-label');
+
+                let showRaw = false;
+
+                if (!toggleBtn) return;
+
+                toggleBtn.addEventListener('click', () => {
+                    showRaw = !showRaw;
+                    if (showRaw) {
+                        timelineView.classList.add('hidden');
+                        rawView.classList.remove('hidden');
+                        toggleIcon.textContent = 'grid_view';
+                        toggleLabel.textContent = 'Show Timeline';
+                    } else {
+                        timelineView.classList.remove('hidden');
+                        rawView.classList.add('hidden');
+                        toggleIcon.textContent = 'article';
+                        toggleLabel.textContent = 'Show Raw Text';
+                    }
+                });
+
+                function getIconForType(type) {
+                    const t = type.toLowerCase();
+                    if (t.includes('course') || t.includes('resource') || t.includes('read') || t.includes('book')) {
+                        return { icon: 'menu_book', color: 'text-sky-400', badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20' };
+                    }
+                    if (t.includes('project') || t.includes('practice') || t.includes('build') || t.includes('code')) {
+                        return { icon: 'terminal', color: 'text-purple-400', badge: 'bg-purple-500/10 text-purple-400 border-purple-500/20' };
+                    }
+                    if (t.includes('milestone') || t.includes('checkpoint') || t.includes('goal') || t.includes('test')) {
+                        return { icon: 'check_circle', color: 'text-emerald-400', badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' };
+                    }
+                    if (t.includes('networking') || t.includes('share') || t.includes('community') || t.includes('connect')) {
+                        return { icon: 'groups', color: 'text-amber-400', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20' };
+                    }
+                    return { icon: 'rocket_launch', color: 'text-oceanBlue', badge: 'bg-oceanBlue/10 text-oceanBlue border-oceanBlue/20' };
+                }
+
+                window.renderMonth = function(monthIndex) {
+                    const month = parsedMonths[monthIndex];
+                    if (!month) return;
+
+                    // Highlight active tab
+                    document.querySelectorAll('.month-tab').forEach((tab, index) => {
+                        if (index === monthIndex) {
+                            tab.className = 'month-tab px-4 py-2.5 rounded-xl text-xs font-bold bg-oceanBlue text-white shadow-premium transition-all duration-200';
+                        } else {
+                            tab.className = 'month-tab px-4 py-2.5 rounded-xl text-xs font-bold border border-darkBorder text-textSecondary hover:text-white hover:bg-darkBg/50 transition-all duration-200';
+                        }
+                    });
+
+                    // Render weeks timeline
+                    if (month.weeks.length === 0) {
+                        timelineContent.innerHTML = `
+                            <div class="py-8 text-center text-textSecondary text-xs">
+                                No weekly breakdown available for this phase.
+                            </div>`;
+                        return;
+                    }
+
+                    let html = '';
+                    month.weeks.forEach(week => {
+                        let itemsHtml = '';
+                        week.items.forEach(item => {
+                            const style = getIconForType(item.type);
+                            itemsHtml += `
+                                <div class="flex flex-col sm:flex-row sm:items-start gap-2.5 sm:gap-4 text-sm leading-relaxed">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider ${style.badge} shrink-0 self-start">
+                                        <span class="material-symbols-outlined text-[14px]">${style.icon}</span>
+                                        ${item.type}
+                                    </span>
+                                    <p class="text-textSecondary text-xs md:text-sm pt-0.5">${item.content}</p>
+                                </div>`;
+                        });
+
+                        html += `
+                            <div class="relative group">
+                                <!-- Left Dot -->
+                                <span class="absolute -left-[33px] top-2.5 w-3.5 h-3.5 rounded-full bg-darkBg border-2 border-oceanBlue shadow-glowBlue transition-all duration-300 group-hover:scale-110"></span>
+                                
+                                <!-- Week Card -->
+                                <div class="rounded-2xl border border-darkBorder/60 bg-darkBg/30 p-5 shadow-xl hover:border-oceanBlue/30 hover:bg-darkBg/60 transition-all duration-300 space-y-4">
+                                    <div class="flex items-center justify-between border-b border-darkBorder/20 pb-2">
+                                        <h4 class="font-display font-black text-sm md:text-base text-white">Week ${week.number}</h4>
+                                        ${week.title ? `<span class="text-xs text-textSecondary/85 font-medium font-sans">${week.title}</span>` : ''}
+                                    </div>
+                                    <div class="space-y-4">
+                                        ${itemsHtml || '<p class="text-xs text-textSecondary italic">No tasks specified for this week.</p>'}
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+
+                    timelineContent.innerHTML = html;
+                };
+
+                // Initialize tabs
+                if (parsedMonths.length > 0) {
+                    let tabsHtml = '';
+                    parsedMonths.forEach((month, index) => {
+                        tabsHtml += `
+                            <button type="button" onclick="renderMonth(${index})" class="month-tab">
+                                Month ${month.number}: ${month.title || 'Phase ' + month.number}
+                            </button>`;
+                    });
+                    monthTabsContainer.innerHTML = tabsHtml;
+                    renderMonth(0);
+                } else {
+                    // Fallback to raw markdown if no structural phases detected
+                    toggleBtn.click();
+                    toggleBtn.style.display = 'none';
+                }
+
+            } catch (e) {
+                console.error("Failed to parse timeline, falling back to raw view.", e);
+                const toggleBtn = document.getElementById('toggle-plan-view');
+                if (toggleBtn) {
+                    toggleBtn.click();
+                    toggleBtn.style.display = 'none';
+                }
+            }
+        })();
+        @endif
+    </script>
 </x-layout>
