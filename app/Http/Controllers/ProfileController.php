@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\FileUpload;
-use App\Http\Requests\StoreUserSkillRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use App\Http\Requests\UpdateUserSkillRequest;
-use App\Models\Skill;
-use App\Models\UserSkill;
+use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /**
+     * Create a new ProfileController instance.
+     */
+    public function __construct(protected ProfileService $profileService) {}
+
     /**
      * Display the professional profile.
      */
@@ -40,22 +38,12 @@ class ProfileController extends Controller
     /**
      * Update the user's professional profile information (specialization, bio, image).
      */
-    public function update(UpdateProfileRequest $request, FileUpload $fileUpload): RedirectResponse
+    public function update(UpdateProfileRequest $request): RedirectResponse
     {
         $user = auth()->user();
         $data = $request->only(['name', 'email', 'experience', 'target_job']);
 
-        $uploadedPath = $fileUpload->handle('profile_image', 'profile_images', 'public');
-        if ($uploadedPath !== null) {
-            // Remove old image if it exists
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-
-            $data['profile_image'] = $uploadedPath;
-        }
-
-        $user->update($data);
+        $this->profileService->updateProfile($user, $data);
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
     }

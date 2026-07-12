@@ -156,8 +156,8 @@
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 z-20 hidden lg:hidden"></div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-1 min-w-0 flex flex-col min-h-screen lg:min-h-0 lg:h-screen lg:overflow-hidden">
-        <div class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto lg:h-full lg:overflow-hidden">
+    <main class="flex-1 min-w-0 flex flex-col min-h-screen lg:min-h-0 lg:h-screen lg:overflow-y-auto">
+        <div class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto min-h-0">
             {{ $slot }}
         </div>
     </main>

@@ -350,30 +350,28 @@
     </section>
 
     <!-- BLUE STRIPE BANNER (STUNNING TEXT ROTATION / KEY METRICS) -->
-    <section
-        class="bg-gradient-to-r from-oceanBlue to-[#0284c7] py-16 relative overflow-hidden text-white border-y border-white/10">
-        <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-        <div
-            class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/20 text-center">
+    <section class="border-y border-darkBorder bg-darkCard/40 backdrop-blur-sm py-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-6 md:gap-y-0 md:divide-x divide-darkBorder text-center">
 
-            <div class="pt-6 md:pt-0">
-                <h3 class="text-5xl font-black font-display tracking-tight">100%</h3>
-                <p class="text-xs font-bold uppercase tracking-wider text-white/70 mt-2">Automated Skill Assessment</p>
+            <div>
+                <h3 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-oceanBlue">100%</h3>
+                <p class="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-textSecondary mt-2">Automated Skill Assessment</p>
             </div>
 
-            <div class="pt-6 md:pt-0">
-                <h3 class="text-5xl font-black font-display tracking-tight">AI</h3>
-                <p class="text-xs font-bold uppercase tracking-wider text-white/70 mt-2">Curated Roadmap Paths</p>
+            <div>
+                <h3 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-oceanBlue">AI</h3>
+                <p class="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-textSecondary mt-2">Curated Roadmap Paths</p>
             </div>
 
-            <div class="pt-6 md:pt-0">
-                <h3 class="text-5xl font-black font-display tracking-tight">Real-time</h3>
-                <p class="text-xs font-bold uppercase tracking-wider text-white/70 mt-2">Job Readiness Score</p>
+            <div>
+                <h3 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-oceanBlue">Real-time</h3>
+                <p class="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-textSecondary mt-2">Job Readiness Score</p>
             </div>
 
-            <div class="pt-6 md:pt-0">
-                <h3 class="text-5xl font-black font-display tracking-tight">0%</h3>
-                <p class="text-xs font-bold uppercase tracking-wider text-white/70 mt-2">Placeholder Guesswork</p>
+            <div>
+                <h3 class="text-3xl md:text-4xl font-extrabold font-display tracking-tight text-oceanBlue">0%</h3>
+                <p class="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-textSecondary mt-2">Placeholder Guesswork</p>
             </div>
 
         </div>

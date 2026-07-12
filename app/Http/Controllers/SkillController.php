@@ -6,7 +6,6 @@ use App\Http\Requests\StoreUserSkillRequest;
 use App\Http\Requests\UpdateUserSkillRequest;
 use App\Models\Skill;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SkillController extends Controller
