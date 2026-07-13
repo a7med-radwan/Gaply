@@ -18,19 +18,23 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#050811',
-                        darkCard: '#0c1220',
+                        darkBg: '#030712',
+                        darkCard: '#0b0f19',
                         darkBorder: '#1f2937',
                         oceanBlue: '#38bdf8',
                         oceanHover: '#0ea5e9',
                         accentTeal: '#0ea5e9',
                         textPrimary: '#ffffff',
-                        textSecondary: '#94a3b8'
+                        textSecondary: '#9ca3af'
                     },
                     fontFamily: {
                         sans: ['"Inter"', 'sans-serif'],
                         display: ['"Outfit"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    boxShadow: {
+                        premium: '0 0 50px -12px rgba(56, 189, 248, 0.2)',
+                        glowBlue: '0 0 25px rgba(56, 189, 248, 0.3)'
                     }
                 }
             }
@@ -40,19 +44,16 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #050811;
+            background-color: #030712;
             color: #ffffff;
-        }
-        .font-display {
-            font-family: 'Outfit', sans-serif;
         }
 
         /* Dev-tool style Grid Background */
         .bg-grid-pattern {
             background-size: 40px 40px;
             background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
         }
 
         /* Radial mask to fade the grid out */
@@ -75,8 +76,8 @@
         }
 
         @keyframes fillProgress {
-            from { stroke-dashoffset: 390; }
-            to { stroke-dashoffset: 117; } /* 70% readiness */
+            from { stroke-dashoffset: 251; }
+            to { stroke-dashoffset: 75; } /* 70% readiness */
         }
         .animate-fill-progress {
             animation: fillProgress 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -94,12 +95,15 @@
 <body class="min-h-screen flex items-stretch overflow-x-hidden selection:bg-oceanBlue selection:text-white">
 
     <!-- LEFT HALF: Form Section (50%) -->
-    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-[#050811] relative z-10">
+    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-[#030712] relative z-10">
         
+        <!-- Background grid overlay -->
+        <div class="absolute inset-0 z-0 bg-grid-pattern radial-fade-mask opacity-30 pointer-events-none"></div>
+
         <!-- Logo Header -->
-        <div class="flex items-center justify-between logo-transition">
+        <div class="flex items-center justify-between logo-transition relative z-10">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-black text-lg bg-gradient-to-br from-oceanBlue to-[#0ea5e9] shadow-md shadow-oceanBlue/20">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-lg bg-gradient-to-br from-oceanBlue to-[#0ea5e9] shadow-premium group-hover:scale-105 transition-all duration-300">
                     G
                 </div>
                 <span class="font-display font-black text-2xl tracking-tight text-white group-hover:text-oceanBlue transition-colors duration-300">Gaply</span>
@@ -107,9 +111,9 @@
         </div>
 
         <!-- Form Container -->
-        <div class="my-auto max-w-[380px] w-full mx-auto py-12 space-y-8">
+        <div class="my-auto max-w-[390px] w-full mx-auto py-12 space-y-8 relative z-10">
             <div class="space-y-2">
-                <h2 class="font-display font-black text-4xl tracking-tight text-white">Welcome Back</h2>
+                <h2 class="font-display font-black text-4xl tracking-tight text-white leading-tight">Welcome Back</h2>
                 <p class="text-textSecondary text-sm">Sign in to resume tracking your skill development.</p>
             </div>
 
@@ -137,7 +141,7 @@
                 @csrf
 
                 <div class="space-y-1.5">
-                    <label for="email" class="block text-[10px] font-bold uppercase tracking-wider text-textSecondary">Email Address</label>
+                    <label for="email" class="block text-[10px] font-mono font-bold uppercase tracking-wider text-textSecondary/70">Email Address</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-textSecondary">mail</span>
                         <input id="email" type="email" name="{{ config('fortify.username') }}"
@@ -149,8 +153,8 @@
 
                 <div class="space-y-1.5">
                     <div class="flex justify-between items-center">
-                        <label for="password" class="text-[10px] font-bold uppercase tracking-wider text-textSecondary">Password</label>
-                        <a href="{{ route('password.request') }}" class="text-[10px] font-bold uppercase tracking-wider text-oceanBlue hover:text-oceanHover transition-colors">Forgot?</a>
+                        <label for="password" class="text-[10px] font-mono font-bold uppercase tracking-wider text-textSecondary/70">Password</label>
+                        <a href="{{ route('password.request') }}" class="text-[10px] font-mono font-bold uppercase tracking-wider text-oceanBlue hover:text-oceanHover transition-colors">Forgot?</a>
                     </div>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-textSecondary">lock</span>
@@ -168,24 +172,24 @@
                     <label for="remember" class="text-xs text-textSecondary cursor-pointer select-none">Remember my session</label>
                 </div>
 
-                <button type="submit" class="w-full py-3.5 rounded-xl text-white font-bold text-sm bg-oceanBlue hover:bg-oceanHover shadow-premium hover:shadow-glowBlue transition-all active:scale-[0.98]">
+                <button type="submit" class="w-full py-3.5 rounded-xl text-white font-bold text-sm bg-oceanBlue hover:bg-oceanHover shadow-premium hover:shadow-glowBlue transition-all duration-200 active:scale-[0.98]">
                     Sign In
                 </button>
             </form>
         </div>
 
         <!-- Footer Switcher -->
-        <div class="text-center lg:text-left text-xs text-textSecondary">
+        <div class="text-center lg:text-left text-xs text-textSecondary relative z-10">
             Don't have an account?
             <a href="{{ route('register') }}" class="font-bold text-oceanBlue hover:text-oceanHover transition-colors ml-1">Create account</a>
         </div>
     </div>
 
     <!-- RIGHT HALF: Showcase Panel (50%) -->
-    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-[#050811] border-l border-darkBorder/40 showcase-transition">
+    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-[#030712] border-l border-darkBorder/40 showcase-transition">
         <!-- Background elements -->
         <div class="absolute inset-0 bg-grid-pattern radial-fade-mask opacity-40 pointer-events-none"></div>
-        <div class="absolute top-[30%] left-[30%] w-[500px] h-[500px] rounded-full opacity-[0.06] blur-[100px] pointer-events-none bg-oceanBlue"></div>
+        <div class="absolute top-[30%] left-[30%] w-[500px] h-[500px] rounded-full opacity-[0.08] blur-[110px] pointer-events-none bg-oceanBlue animate-pulse-slow"></div>
 
         <!-- Professional Showcase Component -->
         <div class="max-w-[400px] w-full space-y-12 text-center relative z-10">
@@ -202,14 +206,14 @@
                 
                 <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] uppercase font-mono font-bold tracking-wider text-textSecondary">Target Role</p>
+                        <p class="text-[10px] uppercase font-mono font-bold tracking-wider text-textSecondary/65">Target Role</p>
                         <h4 class="text-base font-bold text-white mt-0.5">Senior DevOps Specialist</h4>
                     </div>
 
                     <div class="flex items-center gap-6 py-2">
                         <div class="relative flex items-center justify-center shrink-0">
                             <svg class="w-24 h-24 transform -rotate-90">
-                                <circle cx="48" cy="48" r="40" stroke="#1c2538" stroke-width="6" fill="transparent" />
+                                <circle cx="48" cy="48" r="40" stroke="#111827" stroke-width="6" fill="transparent" />
                                 <circle cx="48" cy="48" r="40" stroke="#38bdf8" stroke-width="6" fill="transparent"
                                     stroke-dasharray="251" 
                                     stroke-dashoffset="251"
@@ -231,7 +235,7 @@
             <div class="space-y-4">
                 <h3 class="font-display text-2xl font-bold text-white">Assess & Calibrate</h3>
                 <p class="text-sm text-textSecondary leading-relaxed max-w-sm mx-auto">
-                    Declare your skill levels, calculate your current readiness index, and let our engine map out exactly what is missing.
+                    Declare your skillset, compute your current readiness index, and let our engine map out exactly what is missing.
                 </p>
             </div>
         </div>
