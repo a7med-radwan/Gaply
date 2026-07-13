@@ -635,7 +635,7 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="border-t border-darkBorder/40 bg-[#05070e] py-16 text-xs text-textSecondary relative z-10">
+    <footer class="border-t border-darkBorder/40 bg-darkCard py-16 text-xs text-textSecondary relative z-10">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm bg-oceanBlue">

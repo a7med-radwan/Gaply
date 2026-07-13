@@ -143,7 +143,7 @@
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($careerPlan->missing_skills ?? [] as $skill)
-                                    <span class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-[#0c1220] text-xs font-semibold text-red-300 flex items-center gap-1.5 transition-all">
+                                    <span class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-darkBg text-xs font-semibold text-red-300 flex items-center gap-1.5 transition-all">
                                         <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
                                         {{ $skill }}
                                     </span>

@@ -54,7 +54,7 @@
                             <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
                             Model Answer & Explanation
                         </div>
-                        <div class="text-xs md:text-sm text-textSecondary leading-relaxed bg-[#050811]/40 border border-darkBorder/30 p-4 rounded-xl whitespace-pre-line font-sans">
+                        <div class="text-xs md:text-sm text-textSecondary leading-relaxed bg-darkCard border border-darkBorder/40 p-4 rounded-xl whitespace-pre-line font-sans shadow-sm">
                             {{ $q['answer'] }}
                         </div>
                     </div>
