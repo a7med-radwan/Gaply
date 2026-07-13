@@ -53,11 +53,21 @@ class CareerGapAgent implements Agent, HasStructuredOutput
         2. **Missing Skills**: Identify which required skills the candidate currently lacks or needs to improve significantly.
         3. **Gap Summary**: Write a clear, honest, and motivating 2-3 paragraph summary of the gap between the candidate's current state and the target role.
         4. **Readiness Score**: Rate the candidate's current readiness from 0 to 100 based on skill match.
-        5. **Improvement Plan**: Create a detailed, actionable week-by-week improvement plan (3-6 months) that covers:
-           - Specific resources to learn (courses, books, projects)
-           - Milestones and checkpoints
-           - Portfolio/project suggestions
-           - Networking and job search tips
+        5. **Improvement Plan**: Create a detailed, actionable week-by-week improvement plan (3-6 months).
+           You MUST strictly follow this exact Markdown structure (using the headings and bullet format shown below) so it can be parsed correctly:
+
+           ### Month 1: [Month Title]
+           - **Week 1**: [Week Title/Focus]
+             - **Course**: [Description of course or book to read]
+             - **Project**: [Description of practical coding project to build]
+             - **Milestone**: [Description of goal/checkpoint for the week]
+           - **Week 2**: [Week Title/Focus]
+             - **Course**: [Description]
+             ...
+           ### Month 2: [Month Title]
+           ...
+
+           Ensure you cover specific learning resources, practical projects, clear checkpoints, and networking tips.
 
         Be specific, practical, and encouraging. The plan should be realistic and achievable.
         PROMPT;

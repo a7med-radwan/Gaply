@@ -8,6 +8,7 @@ use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use App\Jobs\GenerateCareerPlanJob;
 
 class CareerPlanService
 {
@@ -28,19 +29,14 @@ class CareerPlanService
 
         $user->load('skills');
 
-        $response = CareerGapAgent::make($user)->prompt(
-            "Perform a full career gap analysis for this candidate who wants to become a {$user->target_job}."
-        );
-
-        return $user->careerPlans()->create([
+        $careerPlan = $user->careerPlans()->create([
             'target_job' => $user->target_job,
-            'missing_skills' => $response['missing_skills'],
-            'market_requirements' => $response['market_requirements'],
-            'readiness_score' => $response['readiness_score'],
-            'gap_summary' => $response['gap_summary'],
-            'improvement_plan' => $response['improvement_plan'],
-            'status' => CareerPlanStatus::Active,
+            'status' => CareerPlanStatus::Pending,
         ]);
+
+        GenerateCareerPlanJob::dispatch($user, $careerPlan);
+
+        return $careerPlan;
     }
 
     /**

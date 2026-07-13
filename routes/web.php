@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
 
     // Career Gap Analysis Plan
     Route::get('/career-plan', [CareerPlanController::class, 'index'])->name('career-plan.index');
+    Route::get('/career-plan/processing', [CareerPlanController::class, 'processing'])->name('career-plan.processing');
     Route::post('/career-plan/generate', [CareerPlanController::class, 'generate'])->name('career-plan.generate');
     Route::patch('/career-plan/{careerPlan}/complete', [CareerPlanController::class, 'complete'])->name('career-plan.complete');
     Route::get('/career-plan/missing-skills', [CareerPlanController::class, 'missingSkills'])->name('career-plan.missing-skills');

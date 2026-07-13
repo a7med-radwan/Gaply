@@ -143,18 +143,10 @@
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($careerPlan->missing_skills ?? [] as $skill)
-                                    <div class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-[#0c1220] hover:bg-[#0f172a] text-xs font-semibold text-red-300 flex items-center justify-between gap-3 group/skill transition-all">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                                            {{ $skill }}
-                                        </div>
-                                        <a href="{{ route('career-plan.interview-questions', ['skill_name' => $skill]) }}" 
-                                                class="opacity-0 group-hover/skill:opacity-100 focus:opacity-100 text-[10px] font-bold text-red-400 hover:text-white transition-all duration-200 flex items-center gap-0.5" 
-                                                title="View Interview Questions">
-                                            <span class="material-symbols-outlined text-xs">quiz</span>
-                                            Interview Qs
-                                        </a>
-                                    </div>
+                                    <span class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-[#0c1220] text-xs font-semibold text-red-300 flex items-center gap-1.5 transition-all">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                                        {{ $skill }}
+                                    </span>
                                 @endforeach
                             </div>
                         </div>
@@ -235,22 +227,6 @@
         @endif
     </div>
 
-    {{-- Loading overlay --}}
-    <div id="loading-overlay"
-        class="fixed inset-0 bg-darkBg/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center gap-4">
-        <div class="w-16 h-16 rounded-2xl bg-accentTeal/10 flex items-center justify-center animate-pulse">
-            <span class="material-symbols-outlined text-accentTeal text-3xl">auto_awesome</span>
-        </div>
-        <div class="text-center space-y-1">
-            <p class="font-display font-bold text-white text-lg">Analyzing your profile...</p>
-            <p class="text-sm text-textSecondary">This may take 15-30 seconds. Please wait.</p>
-        </div>
-        <div class="flex gap-1.5 mt-2">
-            <div class="w-2 h-2 rounded-full bg-accentTeal animate-bounce" style="animation-delay: 0ms"></div>
-            <div class="w-2 h-2 rounded-full bg-accentTeal animate-bounce" style="animation-delay: 150ms"></div>
-            <div class="w-2 h-2 rounded-full bg-accentTeal animate-bounce" style="animation-delay: 300ms"></div>
-        </div>
-    </div>
 
     <style>
         .prose-content {
@@ -262,23 +238,6 @@
     </style>
 
     <script>
-        // Form Loading Logic
-        const form = document.getElementById('generate-form');
-        const overlay = document.getElementById('loading-overlay');
-        const btn = document.getElementById('generate-btn');
-        const icon = document.getElementById('generate-icon');
-        const label = document.getElementById('generate-label');
-
-        if (form) {
-            form.addEventListener('submit', function () {
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                btn.disabled = true;
-                icon.textContent = 'hourglass_top';
-                label.textContent = 'Analyzing...';
-            });
-        }
-
         // Timeline Parser and Renderer
         @if ($careerPlan)
         (function() {
@@ -296,8 +255,8 @@
                         line = line.trim();
                         if (!line) continue;
 
-                        // Month Detection
-                        const monthMatch = line.match(/^(?:###|#|##|\*\*)\s*Month\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^Month\s*(\d+)[:\-]?\s*(.*)$/i);
+                        // Month Detection (matches Month, Phase, Stage, Part, or الشهر)
+                        const monthMatch = line.match(/^(?:###|#|##|\*\*)\s*(?:Month|Phase|Stage|Part|الشهر)\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^(?:Month|Phase|Stage|Part|الشهر)\s*(\d+)[:\-]?\s*(.*)$/i);
                         if (monthMatch) {
                             currentMonth = {
                                 number: monthMatch[1],
@@ -309,8 +268,8 @@
                             continue;
                         }
 
-                        // Week Detection
-                        const weekMatch = line.match(/^(?:-|-\s*\*\*|\*\*|###)\s*Week\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^Week\s*(\d+)[:\-]?\s*(.*)$/i);
+                        // Week Detection (matches Week, Day, Step, or الأسبوع)
+                        const weekMatch = line.match(/^(?:-|-\s*\*\*|\*\*|###)\s*(?:Week|Day|Step|الأسبوع)\s*(\d+)[:\-]?\s*(.*)$/i) || line.match(/^(?:Week|Day|Step|الأسبوع)\s*(\d+)[:\-]?\s*(.*)$/i);
                         if (weekMatch) {
                             if (!currentMonth) {
                                 currentMonth = { number: "1", title: "General Path", weeks: [] };

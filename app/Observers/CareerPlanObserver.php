@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\CareerPlan;
+use App\Enums\CareerPlanStatus;
 
 class CareerPlanObserver
 {
@@ -11,7 +12,26 @@ class CareerPlanObserver
      */
     public function created(CareerPlan $careerPlan): void
     {
-        // Delete all previous career plans for the same user
+        if ($careerPlan->status === CareerPlanStatus::Active) {
+            $this->deleteOldPlans($careerPlan);
+        }
+    }
+
+    /**
+     * Handle the CareerPlan "updated" event.
+     */
+    public function updated(CareerPlan $careerPlan): void
+    {
+        if ($careerPlan->isDirty('status') && $careerPlan->status === CareerPlanStatus::Active) {
+            $this->deleteOldPlans($careerPlan);
+        }
+    }
+
+    /**
+     * Delete all other career plans for the same user.
+     */
+    protected function deleteOldPlans(CareerPlan $careerPlan): void
+    {
         $careerPlan->user->careerPlans()
             ->where('id', '!=', $careerPlan->id)
             ->delete();

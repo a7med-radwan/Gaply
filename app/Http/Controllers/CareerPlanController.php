@@ -20,12 +20,31 @@ class CareerPlanController extends Controller
     /**
      * Display the user's latest career plan.
      */
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
         $user = auth()->user();
         $careerPlan = $user->careerPlans()->latest()->first();
 
+        if ($careerPlan && $careerPlan->status === CareerPlanStatus::Pending) {
+            return redirect()->route('career-plan.processing');
+        }
+
         return view('career-plan.index', compact('user', 'careerPlan'));
+    }
+
+    /**
+     * Display the career plan processing page.
+     */
+    public function processing(): View|RedirectResponse
+    {
+        $user = auth()->user();
+        $careerPlan = $user->careerPlans()->latest()->first();
+
+        if (!$careerPlan || $careerPlan->status !== CareerPlanStatus::Pending) {
+            return redirect()->route('career-plan.index');
+        }
+
+        return view('career-plan.processing');
     }
 
     /**
@@ -38,8 +57,8 @@ class CareerPlanController extends Controller
         try {
             $this->careerPlanService->generateForUser($user);
 
-            return redirect()->route('career-plan.index')
-                ->with('success', 'Career gap analysis completed successfully!');
+            return redirect()->route('career-plan.processing')
+                ->with('status', 'Career gap analysis started in the background.');
         } catch (\Exception $e) {
             if ($e->getCode() === 400) {
                 return redirect()->route('profile.edit')->with('status', $e->getMessage());
