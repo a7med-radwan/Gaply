@@ -122,9 +122,15 @@
                 </a>
 
                 <a href="{{ route('career-plan.index') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('career-plan.*') ? 'bg-accentTeal text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('career-plan.index') ? 'bg-accentTeal text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
                     <span class="material-symbols-outlined text-lg">analytics</span>
                     Career Plan
+                </a>
+
+                <a href="{{ route('career-plan.missing-skills') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('career-plan.missing-skills') ? 'bg-oceanBlue text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    <span class="material-symbols-outlined text-lg">running_with_errors</span>
+                    Missing Skills
                 </a>
 
             </nav>

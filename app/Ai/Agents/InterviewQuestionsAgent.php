@@ -51,9 +51,9 @@ The questions should:
         return [
             'questions' => $schema->array()->items(
                 $schema->object([
-                    'question' => $schema->string()->description('The interview question'),
-                    'answer' => $schema->string()->description('The model answer / explanation'),
-                    'difficulty' => $schema->string()->description('Difficulty level: Easy, Medium, or Hard'),
+                    'question' => $schema->string()->required()->description('The interview question'),
+                    'answer' => $schema->string()->required()->description('The model answer / explanation'),
+                    'difficulty' => $schema->string()->required()->description('Difficulty level: Easy, Medium, or Hard'),
                 ])
             )->required()->description('List of interview questions and answers'),
         ];

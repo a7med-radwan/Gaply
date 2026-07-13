@@ -26,24 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/career-plan', [CareerPlanController::class, 'index'])->name('career-plan.index');
     Route::post('/career-plan/generate', [CareerPlanController::class, 'generate'])->name('career-plan.generate');
     Route::patch('/career-plan/{careerPlan}/complete', [CareerPlanController::class, 'complete'])->name('career-plan.complete');
+    Route::get('/career-plan/missing-skills', [CareerPlanController::class, 'missingSkills'])->name('career-plan.missing-skills');
 
     // AI Tools Routes
-    Route::post('/profile/optimize-bio', [ProfileController::class, 'optimizeBio'])->name('profile.optimize-bio');
-    Route::post('/career-plan/interview-questions', [CareerPlanController::class, 'interviewQuestions'])->name('career-plan.interview-questions');
-});
-
-// Temporary route to run migrations on Render Free Tier
-Route::get('/run-migrations-secure-123', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate:status');
-        $statusOutput = \Illuminate\Support\Facades\Artisan::output();
-        
-        \Illuminate\Support\Facades\Artisan::call('migrate --force');
-        $migrateOutput = \Illuminate\Support\Facades\Artisan::output();
-        
-        return '<pre>Status:\n' . $statusOutput . '\n\nMigration Output:\n' . $migrateOutput . '</pre>';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
+    Route::put('/profile/optimize-bio', [ProfileController::class, 'optimizeBio'])->name('profile.optimize-bio');
+    Route::get('/career-plan/interview-questions', [CareerPlanController::class, 'interviewQuestions'])->name('career-plan.interview-questions');
 });
 

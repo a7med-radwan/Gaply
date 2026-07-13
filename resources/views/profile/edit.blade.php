@@ -124,14 +124,14 @@
                         <div class="space-y-1.5">
                             <div class="flex items-center justify-between">
                                 <label for="experience" class="block text-xs font-semibold text-textSecondary font-sans">My Experience / Projects</label>
-                                <button type="button" id="optimize-bio-btn" class="text-xs font-bold text-oceanBlue hover:text-white transition-colors flex items-center gap-1">
+                                <button type="submit" formaction="{{ route('profile.optimize-bio') }}" class="text-xs font-bold text-oceanBlue hover:text-white transition-colors flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
                                     Optimize with AI
                                 </button>
                             </div>
                             <textarea id="experience" name="experience" rows="5"
                                 placeholder="Write about your previous jobs, projects, or studies..."
-                                class="w-full px-3.5 py-3 rounded-xl border bg-darkBg text-sm outline-none text-white transition-all resize-none {{ $errors->has('experience') ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-darkBorder focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue' }}">{{ old('experience', $user->experience) }}</textarea>
+                                class="w-full px-3.5 py-3 rounded-xl border bg-darkBg text-sm outline-none text-white transition-all resize-none {{ $errors->has('experience') ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500' : 'border-darkBorder focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue' }}">{{ session('optimized_experience') ?? old('experience', $user->experience) }}</textarea>
                         </div>
                     </div>
 
@@ -171,46 +171,6 @@
                 if (sidebar) {
                     sidebar.src = url;
                 }
-            }
-        });
-    </script>
-
-    <script>
-        document.getElementById('optimize-bio-btn')?.addEventListener('click', async function() {
-            const textarea = document.getElementById('experience');
-            const btn = this;
-            const originalHtml = btn.innerHTML;
-
-            if (!textarea.value.trim()) {
-                alert('Please enter some draft experience details first.');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = `<span class="material-symbols-outlined text-[14px] animate-spin">sync</span> Optimizing...`;
-
-            try {
-                const response = await fetch('{{ route('profile.optimize-bio') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ experience: textarea.value })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    textarea.value = data.optimized;
-                } else {
-                    alert(data.message || 'An error occurred during optimization.');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Failed to connect to the server.');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHtml;
             }
         });
     </script>

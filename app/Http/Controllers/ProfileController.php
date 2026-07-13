@@ -53,22 +53,28 @@ class ProfileController extends Controller
     /**
      * Optimize user bio using AI.
      */
-    public function optimizeBio(Request $request): JsonResponse
+    public function optimizeBio(Request $request): RedirectResponse
     {
         $user = auth()->user();
         $rawText = $request->input('experience', '');
 
+        if (empty(trim($rawText))) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Please enter some draft experience details first.']);
+        }
+
         try {
             $optimizedText = $this->profileService->optimizeBio($user, $rawText);
-            return response()->json([
-                'success' => true,
-                'optimized' => $optimizedText,
-            ]);
+
+            return redirect()->back()
+                ->withInput()
+                ->with('success', 'Biography optimized successfully!')
+                ->with('optimized_experience', $optimizedText);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to optimize biography: ' . $e->getMessage(),
-            ], 500);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Failed to optimize biography: ' . $e->getMessage()]);
         }
     }
 }
