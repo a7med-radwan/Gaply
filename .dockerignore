@@ -1,0 +1,16 @@
+.git
+.github
+.env
+/node_modules
+/vendor
+/public/build
+/storage/*.key
+/database/database.sqlite
+.phpunit.result.cache
+tests
+Dockerfile
+docker-entrypoint.sh
+render.yaml
+README.md
+AGENTS.md
+CLAUDE.md

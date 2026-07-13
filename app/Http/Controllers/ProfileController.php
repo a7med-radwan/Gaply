@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
 use App\Services\ProfileService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -46,5 +48,27 @@ class ProfileController extends Controller
         $this->profileService->updateProfile($user, $data);
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Optimize user bio using AI.
+     */
+    public function optimizeBio(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $rawText = $request->input('experience', '');
+
+        try {
+            $optimizedText = $this->profileService->optimizeBio($user, $rawText);
+            return response()->json([
+                'success' => true,
+                'optimized' => $optimizedText,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to optimize biography: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

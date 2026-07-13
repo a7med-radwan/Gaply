@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Ai\Agents\CareerGapAgent;
+use App\Ai\Agents\InterviewQuestionsAgent;
 use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;
 use App\Models\User;
@@ -39,5 +40,17 @@ class CareerPlanService
             'improvement_plan' => $response['improvement_plan'],
             'status' => CareerPlanStatus::Active,
         ]);
+    }
+
+    /**
+     * Generate structured interview questions for a missing skill.
+     */
+    public function generateInterviewQuestions(string $skillName, string $targetJob): array
+    {
+        $response = InterviewQuestionsAgent::make($skillName, $targetJob)->prompt(
+            "Generate questions for skill: {$skillName} and target job: {$targetJob}."
+        );
+
+        return $response['questions'] ?? [];
     }
 }

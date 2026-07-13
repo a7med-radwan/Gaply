@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;
 use App\Services\CareerPlanService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -62,5 +64,34 @@ class CareerPlanController extends Controller
 
         return redirect()->route('career-plan.index')
             ->with('success', 'Career plan marked as completed. Great work!');
+    }
+
+    /**
+     * Get AI generated interview questions for a missing skill.
+     */
+    public function interviewQuestions(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $skillName = $request->input('skill_name');
+
+        if (!$skillName || !$user->target_job) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid parameters or missing target job.',
+            ], 400);
+        }
+
+        try {
+            $questions = $this->careerPlanService->generateInterviewQuestions($skillName, $user->target_job);
+            return response()->json([
+                'success' => true,
+                'questions' => $questions,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to generate interview questions: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

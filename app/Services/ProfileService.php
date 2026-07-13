@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Actions\FileUpload;
+use App\Ai\Agents\BioOptimizerAgent;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,5 +32,19 @@ class ProfileService
         $user->update($data);
 
         return $user;
+    }
+
+    /**
+     * Optimize the user's bio using AI.
+     */
+    public function optimizeBio(User $user, string $rawText): string
+    {
+        if (empty(trim($rawText))) {
+            return '';
+        }
+
+        return BioOptimizerAgent::make($user, $rawText)->prompt(
+            "Optimize the following biography text:\n\n" . $rawText
+        );
     }
 }

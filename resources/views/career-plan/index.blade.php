@@ -143,10 +143,19 @@
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($careerPlan->missing_skills ?? [] as $skill)
-                                    <span class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-red-500/5 text-xs font-semibold text-red-300 flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
-                                        {{ $skill }}
-                                    </span>
+                                    <div class="px-3 py-1.5 rounded-lg border border-red-500/20 bg-[#0c1220] hover:bg-[#0f172a] text-xs font-semibold text-red-300 flex items-center justify-between gap-3 group/skill transition-all">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                                            {{ $skill }}
+                                        </div>
+                                        <button type="button" 
+                                                onclick="loadInterviewQuestions('{{ addslashes($skill) }}')" 
+                                                class="opacity-0 group-hover/skill:opacity-100 focus:opacity-100 text-[10px] font-bold text-red-400 hover:text-white transition-all duration-200 flex items-center gap-0.5" 
+                                                title="View Interview Questions">
+                                            <span class="material-symbols-outlined text-xs">quiz</span>
+                                            Interview Qs
+                                        </button>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -476,5 +485,133 @@
             }
         })();
         @endif
+    </script>
+
+    {{-- Interview Questions Modal --}}
+    <div id="interview-modal" class="fixed inset-0 bg-darkBg/95 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="max-w-2xl w-full bg-darkCard border border-darkBorder rounded-3xl p-6 shadow-2xl relative space-y-6 flex flex-col max-h-[85vh]">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-darkBorder/40 pb-4 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-oceanBlue text-2xl">quiz</span>
+                    <div>
+                        <h3 class="font-display font-black text-base md:text-lg text-white" id="modal-skill-title">Interview Prep</h3>
+                        <p class="text-xs text-textSecondary mt-0.5 font-sans">Common questions and model answers for this skill.</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeInterviewModal()" class="p-2 rounded-xl text-textSecondary hover:text-white hover:bg-darkBg/50 transition-all">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+
+            <!-- Content Area (Scrollable) -->
+            <div class="flex-1 overflow-y-auto pr-1 space-y-4 py-2" id="modal-questions-content"></div>
+
+            <!-- Footer -->
+            <div class="border-t border-darkBorder/40 pt-4 flex justify-end shrink-0">
+                <button type="button" onclick="closeInterviewModal()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#050811]/60 border border-darkBorder text-textSecondary hover:text-white transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('interview-modal');
+        const modalTitle = document.getElementById('modal-skill-title');
+        const modalContent = document.getElementById('modal-questions-content');
+
+        window.loadInterviewQuestions = async function(skillName) {
+            modalTitle.textContent = `Interview Prep: ${skillName}`;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            modalContent.innerHTML = `
+                <div class="h-48 flex flex-col items-center justify-center gap-3">
+                    <span class="material-symbols-outlined text-3xl text-oceanBlue animate-spin">sync</span>
+                    <p class="text-xs text-textSecondary font-semibold">Generating questions via AI...</p>
+                </div>`;
+
+            try {
+                const response = await fetch('{{ route('career-plan.interview-questions') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ skill_name: skillName })
+                });
+
+                const data = await response.json();
+                if (data.success && data.questions && data.questions.length > 0) {
+                    let html = '';
+                    data.questions.forEach((q, idx) => {
+                        const diffColors = q.difficulty.toLowerCase() === 'hard' ? 'text-red-400 bg-red-500/10 border-red-500/20' : 
+                                           (q.difficulty.toLowerCase() === 'medium' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' : 
+                                           'text-emerald-400 bg-emerald-500/10 border-emerald-500/20');
+                        
+                        html += `
+                            <div class="rounded-2xl border border-darkBorder/60 bg-darkBg/30 p-4 space-y-3 text-left">
+                                <div class="flex items-start justify-between gap-3">
+                                    <h4 class="text-sm font-bold text-white font-sans flex gap-2">
+                                        <span class="text-oceanBlue">${idx + 1}.</span>
+                                        ${q.question}
+                                    </h4>
+                                    <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border ${diffColors} shrink-0">
+                                        ${q.difficulty}
+                                    </span>
+                                </div>
+                                <div class="border-t border-darkBorder/20 pt-3">
+                                    <button type="button" onclick="toggleAnswer(this)" class="text-xs font-bold text-oceanBlue hover:text-white transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">visibility</span>
+                                        <span>Show Model Answer</span>
+                                    </button>
+                                    <div class="hidden mt-3 text-xs md:text-sm text-textSecondary leading-relaxed bg-[#050811]/40 border border-darkBorder/30 p-3 rounded-xl whitespace-pre-line font-sans">
+                                        ${q.answer}
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    modalContent.innerHTML = html;
+                } else {
+                    modalContent.innerHTML = `
+                        <div class="h-48 flex flex-col items-center justify-center gap-2 text-center text-textSecondary">
+                            <span class="material-symbols-outlined text-3xl text-red-400">error</span>
+                            <p class="text-xs">${data.message || 'Failed to generate interview questions.'}</p>
+                        </div>`;
+                }
+            } catch (err) {
+                console.error(err);
+                modalContent.innerHTML = `
+                    <div class="h-48 flex flex-col items-center justify-center gap-2 text-center text-textSecondary">
+                        <span class="material-symbols-outlined text-3xl text-red-400">wifi_off</span>
+                        <p class="text-xs">Connection failed. Please try again.</p>
+                    </div>`;
+            }
+        };
+
+        window.closeInterviewModal = function() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        };
+
+        window.toggleAnswer = function(btn) {
+            const answerDiv = btn.nextElementSibling;
+            const icon = btn.querySelector('.material-symbols-outlined');
+            const label = btn.querySelector('span:not(.material-symbols-outlined)');
+
+            if (answerDiv.classList.contains('hidden')) {
+                answerDiv.classList.remove('hidden');
+                icon.textContent = 'visibility_off';
+                label.textContent = 'Hide Model Answer';
+            } else {
+                answerDiv.classList.add('hidden');
+                icon.textContent = 'visibility';
+                label.textContent = 'Show Model Answer';
+            }
+        };
     </script>
 </x-layout>

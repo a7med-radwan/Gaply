@@ -26,4 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/career-plan', [CareerPlanController::class, 'index'])->name('career-plan.index');
     Route::post('/career-plan/generate', [CareerPlanController::class, 'generate'])->name('career-plan.generate');
     Route::patch('/career-plan/{careerPlan}/complete', [CareerPlanController::class, 'complete'])->name('career-plan.complete');
+
+    // AI Tools Routes
+    Route::post('/profile/optimize-bio', [ProfileController::class, 'optimizeBio'])->name('profile.optimize-bio');
+    Route::post('/career-plan/interview-questions', [CareerPlanController::class, 'interviewQuestions'])->name('career-plan.interview-questions');
 });
