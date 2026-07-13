@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaply — AI Career Path Bridge</title>
 
+    {{-- Prevent theme flash --}}
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light');
+        } else {
+            document.documentElement.classList.remove('light');
+        }
+    </script>
+
     {{-- Premium Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,11 +55,104 @@
     </script>
 
     <style>
+        :root {
+            --bg-primary: #030712;
+            --bg-card: #0b0f19;
+            --border-primary: #1f2937;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+        }
+
+        html.light {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-primary: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #030712;
-            color: #ffffff;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             overflow-x: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        html.light body {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        html.light .text-white {
+            color: var(--text-primary) !important;
+        }
+
+        html.light .bg-darkBg {
+            background-color: var(--bg-primary) !important;
+        }
+
+        html.light .bg-darkCard {
+            background-color: var(--bg-card) !important;
+        }
+
+        html.light footer {
+            background-color: var(--bg-card) !important;
+        }
+
+        html.light .border-darkBorder {
+            border-color: var(--border-primary) !important;
+        }
+
+        html.light .text-textSecondary {
+            color: var(--text-secondary) !important;
+        }
+
+        /* Opacities & Hover Overrides */
+        html.light [class*="border-darkBorder/"] {
+            border-color: var(--border-primary) !important;
+        }
+        html.light [class*="bg-darkBg/"] {
+            background-color: var(--bg-primary) !important;
+        }
+        html.light [class*="bg-darkCard/"] {
+            background-color: var(--bg-card) !important;
+        }
+
+        html.light .hover\:text-white:hover {
+            color: var(--text-primary) !important;
+        }
+
+        html.light .from-darkCard {
+            --tw-gradient-from: var(--bg-card) var(--tw-gradient-from-position) !important;
+            --tw-gradient-to: rgba(241, 245, 249, 0) var(--tw-gradient-to-position) !important;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+        }
+        html.light .to-darkCard\/30 {
+            --tw-gradient-to: rgba(241, 245, 249, 0.3) var(--tw-gradient-to-position) !important;
+        }
+
+        html.light .bg-grid-pattern {
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px) !important;
+        }
+
+        html.light svg circle:first-child {
+            stroke: var(--border-primary) !important;
+        }
+
+        html.light .text-textSecondary\/70 {
+            color: rgba(71, 85, 105, 0.7) !important;
+        }
+        html.light .text-textSecondary\/65 {
+            color: rgba(71, 85, 105, 0.65) !important;
+        }
+        html.light .text-textSecondary\/50 {
+            color: rgba(71, 85, 105, 0.5) !important;
+        }
+        html.light .text-textSecondary\/40 {
+            color: rgba(71, 85, 105, 0.4) !important;
         }
 
         /* Dev-tool style Grid Background */
@@ -63,6 +166,8 @@
         /* Radial mask to fade the grid out */
         .radial-fade-mask {
             mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+        }
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
         }
 
@@ -170,6 +275,11 @@
 
             <!-- Authentication Actions -->
             <div class="flex items-center gap-4">
+                <!-- Theme Toggler Button Desktop -->
+                <button id="theme-toggle" class="p-2 rounded-xl text-textSecondary hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-xl" id="theme-icon">light_mode</span>
+                </button>
+
                 <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-bold text-textSecondary hover:text-white transition-colors duration-200">
                     Log in
                 </a>
@@ -690,6 +800,36 @@
 
         // Initialize simulator with Laravel role
         switchDemoRole('laravel');
+
+        // Theme Toggle Script
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        function updateTogglerUI(theme) {
+            if (theme === 'light') {
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+
+        updateTogglerUI(localStorage.getItem('theme') || 'dark');
+
+        function toggleTheme() {
+            const isLight = html.classList.contains('light');
+            if (isLight) {
+                html.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                updateTogglerUI('dark');
+            } else {
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                updateTogglerUI('light');
+            }
+        }
+
+        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
     </script>
 </body>
 

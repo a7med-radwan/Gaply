@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaply — Create Account</title>
 
+    {{-- Prevent theme flash --}}
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light');
+        } else {
+            document.documentElement.classList.remove('light');
+        }
+    </script>
+
     {{-- Premium Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,10 +52,113 @@
     </script>
 
     <style>
+        :root {
+            --bg-primary: #030712;
+            --bg-card: #0b0f19;
+            --border-primary: #1f2937;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+        }
+
+        html.light {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-primary: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #030712;
-            color: #ffffff;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        html.light body {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        html.light .text-white {
+            color: var(--text-primary) !important;
+        }
+
+        html.light .bg-darkBg {
+            background-color: var(--bg-primary) !important;
+        }
+
+        html.light .bg-darkCard {
+            background-color: var(--bg-card) !important;
+        }
+
+        html.light .border-darkBorder {
+            border-color: var(--border-primary) !important;
+        }
+
+        html.light .text-textSecondary {
+            color: var(--text-secondary) !important;
+        }
+
+        /* Opacities & Hover Overrides */
+        html.light [class*="border-darkBorder/"] {
+            border-color: var(--border-primary) !important;
+        }
+        html.light [class*="bg-darkBg/"] {
+            background-color: var(--bg-primary) !important;
+        }
+        html.light [class*="bg-darkCard/"] {
+            background-color: var(--bg-card) !important;
+        }
+
+        html.light .hover\:text-white:hover {
+            color: var(--text-primary) !important;
+        }
+
+        html.light .from-darkCard {
+            --tw-gradient-from: var(--bg-card) var(--tw-gradient-from-position) !important;
+            --tw-gradient-to: rgba(241, 245, 249, 0) var(--tw-gradient-to-position) !important;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+        }
+        html.light .to-darkCard\/30 {
+            --tw-gradient-to: rgba(241, 245, 249, 0.3) var(--tw-gradient-to-position) !important;
+        }
+
+        html.light .bg-grid-pattern {
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px) !important;
+        }
+
+        html.light svg circle:first-child {
+            stroke: var(--border-primary) !important;
+        }
+
+        html.light .text-textSecondary\/70 {
+            color: rgba(71, 85, 105, 0.7) !important;
+        }
+        html.light .text-textSecondary\/65 {
+            color: rgba(71, 85, 105, 0.65) !important;
+        }
+        html.light .text-textSecondary\/50 {
+            color: rgba(71, 85, 105, 0.5) !important;
+        }
+        html.light .text-textSecondary\/40 {
+            color: rgba(71, 85, 105, 0.4) !important;
+        }
+
+        /* Input / Select / Textarea style overrides for Light Mode */
+        html.light input, 
+        html.light select, 
+        html.light textarea {
+            background-color: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-primary) !important;
+        }
+
+        html.light input::placeholder,
+        html.light textarea::placeholder {
+            color: #94a3b8 !important;
         }
 
         /* Dev-tool style Grid Background */
@@ -87,7 +200,7 @@
 <body class="min-h-screen flex items-stretch overflow-x-hidden selection:bg-oceanBlue selection:text-white">
 
     <!-- LEFT HALF: Showcase Panel (50%) -->
-    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-[#030712] border-r border-darkBorder/40 showcase-transition">
+    <div class="hidden lg:flex w-1/2 items-center justify-center p-16 relative overflow-hidden bg-darkBg border-r border-darkBorder/40 showcase-transition">
         <!-- Background elements -->
         <div class="absolute inset-0 bg-grid-pattern radial-fade-mask opacity-40 pointer-events-none"></div>
         <div class="absolute top-[30%] right-[30%] w-[500px] h-[500px] rounded-full opacity-[0.08] blur-[110px] pointer-events-none bg-oceanBlue animate-pulse-slow"></div>
@@ -136,7 +249,7 @@
     </div>
 
     <!-- RIGHT HALF: Form Section (50%) -->
-    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-[#030712] relative z-10">
+    <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 md:p-12 lg:p-16 bg-darkBg relative z-10">
         
         <!-- Background grid overlay -->
         <div class="absolute inset-0 z-0 bg-grid-pattern radial-fade-mask opacity-30 pointer-events-none"></div>
@@ -149,6 +262,11 @@
                 </div>
                 <span class="font-display font-black text-2xl tracking-tight text-white group-hover:text-oceanBlue transition-colors duration-300">Gaply</span>
             </a>
+
+            <!-- Theme Toggler Button -->
+            <button id="theme-toggle" class="p-2 rounded-xl text-textSecondary hover:text-white transition-colors">
+                <span class="material-symbols-outlined text-xl" id="theme-icon">light_mode</span>
+            </button>
         </div>
 
         <!-- Form Container -->
@@ -248,6 +366,36 @@
         }
         makeToggle('toggle-password', 'password', 'password-icon');
         makeToggle('toggle-confirm', 'password_confirmation', 'confirm-icon');
+
+        // Theme Toggle Script
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        function updateTogglerUI(theme) {
+            if (theme === 'light') {
+                if (themeIcon) themeIcon.textContent = 'dark_mode';
+            } else {
+                if (themeIcon) themeIcon.textContent = 'light_mode';
+            }
+        }
+
+        updateTogglerUI(localStorage.getItem('theme') || 'dark');
+
+        function toggleTheme() {
+            const isLight = html.classList.contains('light');
+            if (isLight) {
+                html.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                updateTogglerUI('dark');
+            } else {
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                updateTogglerUI('light');
+            }
+        }
+
+        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
     </script>
 </body>
 </html>
