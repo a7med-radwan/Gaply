@@ -23,11 +23,12 @@ class CareerPlanController extends Controller
     public function index(): View|RedirectResponse
     {
         $user = auth()->user();
-        $careerPlan = $user->careerPlans()->latest()->first();
 
-        if ($careerPlan && $careerPlan->isPending()) {
+        if ($user->careerPlans()->pending()->exists()) {
             return redirect()->route('career-plan.processing');
         }
+
+        $careerPlan = $user->careerPlans()->active()->latest()->first();
 
         return view('career-plan.index', compact('user', 'careerPlan'));
     }
@@ -38,9 +39,9 @@ class CareerPlanController extends Controller
     public function processing(): View|RedirectResponse
     {
         $user = auth()->user();
-        $careerPlan = $user->careerPlans()->latest()->first();
+        $hasPending = $user->careerPlans()->pending()->exists();
 
-        if (!$careerPlan || !$careerPlan->isPending()) {
+        if (!$hasPending) {
             return redirect()->route('career-plan.index');
         }
 
@@ -114,7 +115,7 @@ class CareerPlanController extends Controller
     public function missingSkills(): View
     {
         $user = auth()->user();
-        $careerPlan = $user->careerPlans()->latest()->first();
+        $careerPlan = $user->careerPlans()->active()->latest()->first();
         $missingSkills = $careerPlan?->missing_skills ?? [];
 
         return view('career-plan.missing-skills', compact('user', 'missingSkills', 'careerPlan'));
