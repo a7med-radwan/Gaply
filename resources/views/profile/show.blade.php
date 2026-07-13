@@ -84,20 +84,35 @@
                 <div class="space-y-3">
                     <div class="space-y-1">
                         <label for="current_password" class="block text-xs font-semibold text-textSecondary">Current Password</label>
-                        <input id="current_password" name="current_password" type="password" required placeholder="Enter current password"
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                        <div class="relative">
+                            <input id="current_password" name="current_password" type="password" required placeholder="Enter current password"
+                                class="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                            <button type="button" id="toggle-current-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[18px]" id="current-password-icon">visibility</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="space-y-1">
                         <label for="update_password" class="block text-xs font-semibold text-textSecondary">New Password</label>
-                        <input id="update_password" name="password" type="password" required placeholder="Min. 8 characters"
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                        <div class="relative">
+                            <input id="update_password" name="password" type="password" required placeholder="Min. 8 characters"
+                                class="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                            <button type="button" id="toggle-update-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[18px]" id="update-password-icon">visibility</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="space-y-1">
                         <label for="update_password_confirmation" class="block text-xs font-semibold text-textSecondary">Confirm New Password</label>
-                        <input id="update_password_confirmation" name="password_confirmation" type="password" required placeholder="Confirm new password"
-                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                        <div class="relative">
+                            <input id="update_password_confirmation" name="password_confirmation" type="password" required placeholder="Confirm new password"
+                                class="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-xs outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                            <button type="button" id="toggle-confirm-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[18px]" id="confirm-password-icon">visibility</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -110,6 +125,24 @@
                     </button>
                 </div>
             </form>
+
+            <script>
+                function makeToggle(btnId, inputId, iconId) {
+                    const btn = document.getElementById(btnId);
+                    const inp = document.getElementById(inputId);
+                    const ico = document.getElementById(iconId);
+                    if (btn && inp && ico) {
+                        btn.addEventListener('click', () => {
+                            const isText = inp.type === 'text';
+                            inp.type = isText ? 'password' : 'text';
+                            ico.textContent = isText ? 'visibility' : 'visibility_off';
+                        });
+                    }
+                }
+                makeToggle('toggle-current-password', 'current_password', 'current-password-icon');
+                makeToggle('toggle-update-password', 'update_password', 'update-password-icon');
+                makeToggle('toggle-confirm-password', 'update_password_confirmation', 'confirm-password-icon');
+            </script>
 
         </div>
 
