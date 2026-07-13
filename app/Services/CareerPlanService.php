@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Ai\Agents\CareerGapAgent;
 use App\Ai\Agents\InterviewQuestionsAgent;
 use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;

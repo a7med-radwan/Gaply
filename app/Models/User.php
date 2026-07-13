@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,6 +28,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Interact with the user's name to sanitize inputs.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn(?string $value) => $value ? strip_tags(trim($value)) : null,
+        );
+    }
+
+    /**
+     * Interact with the user's experience to sanitize inputs.
+     */
+    protected function experience(): Attribute
+    {
+        return Attribute::make(
+            set: fn(?string $value) => $value ? strip_tags(trim($value)) : null,
+        );
     }
 
     public function skills(): HasMany
