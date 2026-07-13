@@ -155,6 +155,77 @@
         </div>
     </form>
 
+    <!-- PASSWORD UPDATE SECTION -->
+    <form action="{{ route('user-password.update') }}" method="POST" class="mt-6">
+        @csrf
+        @method('PUT')
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left Blank Column for Alignment -->
+            <div class="lg:col-span-4 hidden lg:block"></div>
+
+            <!-- Password Card -->
+            <div class="lg:col-span-8 rounded-2xl border border-darkBorder/60 bg-darkCard p-6 shadow-xl space-y-6">
+                <div class="flex items-center gap-2 border-b border-darkBorder/40 pb-3">
+                    <span class="material-symbols-outlined text-oceanBlue text-lg">lock</span>
+                    <h3 class="font-display font-bold text-sm text-white">Update Password</h3>
+                </div>
+
+                {{-- Password Status Alerts --}}
+                @if (session('status') === 'password-updated')
+                    <div class="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-xs font-semibold text-emerald-400 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        Password updated successfully!
+                    </div>
+                @endif
+
+                @if ($errors->updatePassword->any())
+                    <div class="p-4 rounded-xl border border-red-500/20 bg-red-500/10 text-xs font-semibold text-red-400 flex items-start gap-2.5">
+                        <span class="material-symbols-outlined text-[18px] shrink-0">error</span>
+                        <ul class="list-disc list-inside space-y-0.5">
+                            @foreach ($errors->updatePassword->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <!-- Password Fields -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <!-- Current Password -->
+                    <div class="space-y-1.5 sm:col-span-2">
+                        <label for="current_password" class="block text-xs font-semibold text-textSecondary">Current Password</label>
+                        <input id="current_password" name="current_password" type="password" required placeholder="Enter your current password"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                    </div>
+
+                    <!-- New Password -->
+                    <div class="space-y-1.5">
+                        <label for="update_password" class="block text-xs font-semibold text-textSecondary">New Password</label>
+                        <input id="update_password" name="password" type="password" required placeholder="Min. 8 characters"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="space-y-1.5">
+                        <label for="update_password_confirmation" class="block text-xs font-semibold text-textSecondary">Confirm New Password</label>
+                        <input id="update_password_confirmation" name="password_confirmation" type="password" required placeholder="Repeat new password"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-darkBorder bg-darkBg text-sm outline-none text-white focus:border-oceanBlue focus:ring-1 focus:ring-oceanBlue transition-all">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-end items-center pt-4 border-t border-darkBorder/40">
+                    <button type="submit"
+                        class="px-6 py-3 rounded-xl text-sm font-bold text-white bg-oceanBlue hover:bg-oceanHover shadow-premium transition-all active:scale-[0.98] flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">vpn_key</span>
+                        Update Password
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <script>
         document.getElementById('profile_image').addEventListener('change', function() {
             if (this.files && this.files[0]) {
