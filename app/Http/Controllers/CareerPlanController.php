@@ -25,7 +25,7 @@ class CareerPlanController extends Controller
         $user = auth()->user();
         $careerPlan = $user->careerPlans()->latest()->first();
 
-        if ($careerPlan && $careerPlan->status === CareerPlanStatus::Pending) {
+        if ($careerPlan && $careerPlan->isPending()) {
             return redirect()->route('career-plan.processing');
         }
 
@@ -40,7 +40,7 @@ class CareerPlanController extends Controller
         $user = auth()->user();
         $careerPlan = $user->careerPlans()->latest()->first();
 
-        if (!$careerPlan || $careerPlan->status !== CareerPlanStatus::Pending) {
+        if (!$careerPlan || !$careerPlan->isPending()) {
             return redirect()->route('career-plan.index');
         }
 

@@ -6,6 +6,7 @@ use App\Enums\CareerPlanStatus;
 use App\Observers\CareerPlanObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class CareerPlan extends Model
 {
@@ -50,5 +51,37 @@ class CareerPlan extends Model
     protected static function booted(): void
     {
         static::observe(CareerPlanObserver::class);
+    }
+
+    /**
+     * Scope a query to only include active career plans.
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', CareerPlanStatus::Active);
+    }
+
+    /**
+     * Scope a query to only include pending career plans.
+     */
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', CareerPlanStatus::Pending);
+    }
+
+    /**
+     * Check if the career plan is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->status === CareerPlanStatus::Active;
+    }
+
+    /**
+     * Check if the career plan is pending.
+     */
+    public function isPending(): bool
+    {
+        return $this->status === CareerPlanStatus::Pending;
     }
 }

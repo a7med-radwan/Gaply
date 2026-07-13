@@ -12,7 +12,7 @@ class CareerPlanObserver
      */
     public function created(CareerPlan $careerPlan): void
     {
-        if ($careerPlan->status === CareerPlanStatus::Active) {
+        if ($careerPlan->isActive()) {
             $this->deleteOldPlans($careerPlan);
         }
     }
@@ -22,7 +22,7 @@ class CareerPlanObserver
      */
     public function updated(CareerPlan $careerPlan): void
     {
-        if ($careerPlan->isDirty('status') && $careerPlan->status === CareerPlanStatus::Active) {
+        if ($careerPlan->isDirty('status') && $careerPlan->isActive()) {
             $this->deleteOldPlans($careerPlan);
         }
     }
