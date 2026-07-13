@@ -16,11 +16,13 @@ class DashboardController extends Controller
         $user = auth()->user();
         $targetJob = $user->target_job;
         $userSkills = $user->skills()->get();
+        $careerPlan = $user->careerPlans()->latest()->first();
 
         return view('dashboard', compact(
             'user',
             'targetJob',
-            'userSkills'
+            'userSkills',
+            'careerPlan'
         ));
     }
 }
