@@ -9,6 +9,7 @@ use App\Models\CareerPlan;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\GenerateCareerPlanJob;
+use Illuminate\Support\Facades\DB;
 
 class CareerPlanService
 {
@@ -19,7 +20,7 @@ class CareerPlanService
      */
     public function generateForUser(User $user): CareerPlan
     {
-        if (! $user->target_job) {
+        if (!$user->target_job) {
             throw new \Exception('Please set your target job first before generating a career plan.', 400);
         }
 
@@ -29,14 +30,16 @@ class CareerPlanService
 
         $user->load('skills');
 
-        $careerPlan = $user->careerPlans()->create([
-            'target_job' => $user->target_job,
-            'status' => CareerPlanStatus::Pending,
-        ]);
+        return DB::transaction(function () use ($user) {
+            $careerPlan = $user->careerPlans()->create([
+                'target_job' => $user->target_job,
+                'status' => CareerPlanStatus::Pending,
+            ]);
 
-        GenerateCareerPlanJob::dispatch($user, $careerPlan);
+            GenerateCareerPlanJob::dispatch($user, $careerPlan)->afterCommit();
 
-        return $careerPlan;
+            return $careerPlan;
+        });
     }
 
     /**

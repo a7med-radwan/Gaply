@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Actions\FileUpload;
 use App\Ai\Agents\BioOptimizerAgent;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileService
@@ -19,19 +20,21 @@ class ProfileService
      */
     public function updateProfile(User $user, array $data): User
     {
-        $uploadedPath = $this->fileUpload->handle('profile_image', 'profile_images', 'public');
-        if ($uploadedPath !== null) {
-            // Remove old image if it exists
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+        return DB::transaction(function () use ($user, $data) {
+            $uploadedPath = $this->fileUpload->handle('profile_image', 'profile_images', 'public');
+            if ($uploadedPath !== null) {
+                // Remove old image if it exists
+                if ($user->profile_image) {
+                    Storage::disk('public')->delete($user->profile_image);
+                }
+
+                $data['profile_image'] = $uploadedPath;
             }
 
-            $data['profile_image'] = $uploadedPath;
-        }
+            $user->update($data);
 
-        $user->update($data);
-
-        return $user;
+            return $user;
+        });
     }
 
     /**
