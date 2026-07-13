@@ -7,6 +7,7 @@ use App\Ai\Agents\InterviewQuestionsAgent;
 use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class CareerPlanService
 {
@@ -47,10 +48,14 @@ class CareerPlanService
      */
     public function generateInterviewQuestions(string $skillName, string $targetJob): array
     {
-        $response = InterviewQuestionsAgent::make($skillName, $targetJob)->prompt(
-            "Generate questions for skill: {$skillName} and target job: {$targetJob}."
-        );
+        $cacheKey = 'interview_questions:' . md5(strtolower($skillName) . '_' . strtolower($targetJob));
 
-        return $response['questions'] ?? [];
+        return Cache::remember($cacheKey, now()->addDay(), function () use ($skillName, $targetJob) {
+            $response = InterviewQuestionsAgent::make($skillName, $targetJob)->prompt(
+                "Generate questions for skill: {$skillName} and target job: {$targetJob}."
+            );
+
+            return $response['questions'] ?? [];
+        });
     }
 }
