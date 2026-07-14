@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع Gaply - العرض التقديمي التفاعلي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Alexandria:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- TOP HEADER -->
+    <header>
+        <div class="header-left">
+            <div class="logo">Gaply <span>.</span></div>
+            <button class="btn-theme" onclick="toggleTheme()" title="تغيير الوضع الرسومي">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+        <div class="nav-info">
+            <span class="badge-live">عرض حي للمشروع</span>
+            <span>حاضنة UCAS للابتكار المهني</span>
+        </div>
+    </header>
+
+    <!-- MAIN SLIDES CONTAINER -->
+    <div class="presentation-container">
+
+        <!-- SLIDE 1: WELCOME/COVER (Ahmed Haitham Radwan - eLance) -->
+        <div class="slide active">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 01</span>
+                    <h2>منصة Gaply المهنية الذكية</h2>
+                    <p>تحليل الفجوة المهنية وتوجيه الخريجين للتطوير المهني باستخدام تقنيات الذكاء الاصطناعي.</p>
+
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
+                        <h4 style="font-size: 13px; color: var(--primary); margin-bottom: 8px; font-weight: 700;">مقدّم
+                            المشروع:</h4>
+                        <div
+                            style="background-color: rgba(14, 165, 233, 0.05); border: 1px solid rgba(14, 165, 233, 0.15); border-radius: 12px; padding: 15px;">
+                            <p style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">
+                                أحمد هيثم رضوان</p>
+                            <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 4px;">ضمن مسار احتضان
+                                مشروع الـ <strong>elancer</strong></p>
+                            <p style="font-size: 11px; color: var(--primary); margin-bottom: 0; font-weight: 600;">
+                                الكلية الجامعية للعلوم التطبيقية - UCAS</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number" style="color: var(--text-sub); margin-top: 15px;">استخدم الأسهم للتنقل</div>
+            </div>
+            <div class="slide-visual visual-multi">
+                <div class="visual-tabs">
+                    <button class="tab-btn active" onclick="switchVisual(this, 0)">الواجهة الترحيبية 1</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 1)">الواجهة الترحيبية 2</button>
+                </div>
+                <div class="visual-images">
+                    <img src="image/Gaply/welcome.png" alt="شاشة الترحيب 1" class="tab-img active">
+                    <img src="image/Gaply/welcome2.png" alt="شاشة الترحيب 2" class="tab-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE PROBLEM & SYSTEM OVERVIEW (Dashboard images) -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 02</span>
+                    <h2>لوحة التحكم ونسبة الاستعداد (Dashboard)</h2>
+                    <p>الواجهة الرئيسية التي توضح للمشاهدين حالته المهنية فور دخوله النظام بمقاييس دقيقة وحل مشكلة
+                        التشتت.</p>
+                    <ul class="feature-list">
+                        <li><strong>حل الفجوة المهنية</strong>: مقارنة ذكية بين المهارات الحالية للمستخدم ومتطلبات السوق
+                            الفعلية للوظيفة المستهدفة.</li>
+                        <li><strong>مقياس الاستعداد التفاعلي</strong>: رسم دائري ملون يوضح الجاهزية.</li>
+                        <li><strong>بطاقات الحالة الذكية</strong>: إحصائيات سريعة عن عدد المهارات المسجلة، الفجوات
+                            المكتشفة، والوظيفة المستهدفة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual visual-multi">
+                <div class="visual-tabs">
+                    <button class="tab-btn active" onclick="switchVisual(this, 0)">لوحة التحكم 1</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 1)">لوحة التحكم 2</button>
+                </div>
+                <div class="visual-images">
+                    <img src="image/Gaply/dashboard.png" alt="لوحة التحكم 1" class="tab-img active">
+                    <img src="image/Gaply/dashboard2.png" alt="لوحة التحكم 2" class="tab-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: SKILLS INVENTORY -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 03</span>
+                    <h2>مخزن المهارات الشخصية (Skills Inventory)</h2>
+                    <p>مساحة خاصة تتيح للمستخدم إدخال مهاراته ومستواها بدقة لتغذية نموذج التحليل المهني.</p>
+                    <ul class="feature-list">
+                        <li><strong>تصنيف سهل</strong>: إضافة المهارات وتعديلها أو حذفها مع تحديد مستوى التمكن (مبتدئ،
+                            متوسط، خبير).</li>
+                        <li><strong>واجهة تفاعلية</strong>: تصميم عصري مريح للعين يسهل إدارة الملف المهني.</li>
+                        <li><strong>ترقية الكفاءة</strong>: فلترة وتنظيف المدخلات برمجياً لضمان سلامة قاعدة البيانات.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual">
+                <img src="image/Gaply/skills.png" alt="إدارة المهارات">
+            </div>
+        </div>
+
+        <!-- SLIDE 4: BIO OPTIMIZER -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 04</span>
+                    <h2>مُحسّن السيرة المهنية بالذكاء الاصطناعي (Bio Optimizer)</h2>
+                    <p>أداة ذكية بضغطة زر واحدة تأخذ صياغة الخبرات البسيطة للمستخدم وتعيد هيكلتها بأسلوب احترافي وجذاب
+                        للموظفين.</p>
+                    <ul class="feature-list">
+                        <li><strong>العميل الذكي</strong>: يعيد الكتابة بالتركيز على الأفعال القوية
+                            والنتائج.</li>
+                        <li><strong>إلغاء المقدمات</strong>: مخرجات مباشرة ومعدّة للنسخ الفوري إلى السيرة الذاتية.</li>
+                        <li><strong>سرعة في التنفيذ</strong>: تحسين فوري في نفس الصفحة وتحديث تلقائي لبيانات المستخدم.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual">
+                <img src="image/Gaply/bio.png" alt="تحسين السيرة الذاتية">
+            </div>
+        </div>
+
+        <!-- SLIDE 5: CAREER PLAN ROADMAP -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 05</span>
+                    <h2>خطة التطوير المهني الأسبوعية (AI Career Plan)</h2>
+                    <p>تقرير الفجوة المهنية المتكامل الذي يطرح حلاً منهجياً مقسماً على أسابيع مخصصة للتطوير.</p>
+                    <ul class="feature-list">
+                        <li><strong>استخراج الفجوات</strong>: حصر تام للمهارات التي تعيقك عن الوظيفة.
+                        </li>
+                        <li><strong>خطة زمنية للمشاريع</strong>: كل أسبوع يتضمن اقتراح دورة/كتاب ومشروع برمجي عملي
+                            للتطبيق.</li>
+                        <li><strong>معالجة في الخلفية</strong>: يتم بناء الخطة بمهام خلفية غير متزامنة لتوفير أداء
+                            مثالي.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual visual-multi">
+                <div class="visual-tabs">
+                    <button class="tab-btn active" onclick="switchVisual(this, 0)">الخطة الأسبوعية</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 1)">تفاصيل المواد</button>
+                </div>
+                <div class="visual-images">
+                    <img src="image/Gaply/career_plan.png" alt="خطة التطوير المهني 1" class="tab-img active">
+                    <img src="image/Gaply/career_plan2.png" alt="خطة التطوير المهني 2" class="tab-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: INTERVIEW QUESTIONS COACH -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 06</span>
+                    <h2>مدرب المقابلات الذكي (AI Interview Coach)</h2>
+                    <p>أداة تفاعلية تقوم بتوليد الأسئلة التقنية النموذجية المتوقعة وتوفر إجاباتها النموذجية لكل مهارة
+                        ناقصة.</p>
+                    <ul class="feature-list">
+                        <li><strong>العميل الذكي</strong>: أسئلة مخصصة متلائمة تماماً مع الوظيفة
+                            المستهدفة.</li>
+                        <li><strong>تدرج الصعوبة</strong>: أسئلة مقسمة ما بين سهلة وممتعة، متوسطة، وأسئلة حل المشكلات
+                            الصعبة.</li>
+                        <li><strong>إجابات نموذجية</strong>: حلول واضحة وتفصيلية لشرح المفاهيم وتأهيل الخريج.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual visual-multi">
+                <div class="visual-tabs">
+                    <button class="tab-btn active" onclick="switchVisual(this, 0)">المهارات الناقصة</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 1)">أسئلة المقابلات</button>
+                </div>
+                <div class="visual-images">
+                    <img src="image/Gaply/missing-skills.png" alt="المهارات المفقودة" class="tab-img active">
+                    <img src="image/Gaply/interview.png" alt="أسئلة المقابلات" class="tab-img">
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: ARCHITECTURE & TECHNICAL CONCEPTS -->
+        <div class="slide">
+            <div class="slide-text">
+                <div>
+                    <span class="slide-number">شريحة 07</span>
+                    <h2>هندسة البرمجيات والتقنيات المتقدمة</h2>
+                    <p>تم تطبيق بنية هندسية مرنة وفعالة تلتزم بأحدث ممارسات البرمجة القياسية في بيئة عمل Laravel.</p>
+                    <ul class="feature-list">
+                        <li><strong>Laravel AI SDK (laravel/ai)</strong>: لبناء وإدارة وكلاء الذكاء الاصطناعي (AI Agents) وتوليد مخرجات مهيكلة وموثوقة.</li>
+                        <li><strong>طبقة الخدمات وعزل منطق الأعمال (Service Layer)</strong>: فصل العمليات المعقدة والاتصال بالـ AI داخل كلاسات خدمية مخصصة مثل `CareerPlanService` لإبقاء الـ Controllers نظيفة.</li>
+                        <li><strong>التحقق الآمن (Laravel Fortify)</strong>: نظام حماية خلفي متكامل لإدارة تسجيل الدخول والتسجيل واستعادة كلمة المرور بأمان تام.</li>
+                        <li><strong>متحكمات الموارد (Resource Controllers)</strong>: تنظيم المسارات والعمليات الأساسية (CRUD) للمهارات والخطط وفق معايير RESTful القياسية.</li>
+                        <li><strong>مكونات القوالب (Blade Layout Components)</strong>: بناء مكون رئيسي مشترك للواجهات لتفادي تكرار الأكواد وتسهيل الصيانة.</li>
+                        <li><strong>الوظائف والمهام الخلفية (Queues & Jobs)</strong>: معالجة تحليلات الذكاء الاصطناعي الثقيلة في الخلفية عبر الـ Jobs لتجنب تجميد وتأخير المتصفح للمستخدم.</li>
+                        <li><strong>نظام الكاش (Caching)</strong>: تخزين أسئلة وأجوبة المقابلات المتكررة لتقليل استهلاك الـ API للذكاء الاصطناعي وتسريع الاستجابة.</li>
+                        <li><strong>مراقبة قواعد البيانات (Observers)</strong>: تنظيف ومسح البيانات والخطط القديمة تلقائياً فورياً عند التحديث.</li>
+                        <li><strong>الـ Scopes والـ Mutators والـ Enums</strong>: لضمان جودة ونظافة وأمن البيانات المدخلة والمستخرجة.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-visual visual-multi">
+                <div class="visual-tabs">
+                    <button class="tab-btn active" onclick="switchVisual(this, 0)">الـ Services والـ Jobs</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 1)">العميل والـ Schema</button>
+                </div>
+                <div class="visual-images">
+                    <img src="image/Gaply/code.png" alt="كود النظام النظيف 1" class="tab-img active">
+                    <img src="image/Gaply/code2.png" alt="كود النظام النظيف 2" class="tab-img">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CONTROLS BAR -->
+    <div class="controls-bar">
+        <div class="buttons-group">
+            <button class="btn" id="prev-btn" onclick="prevSlide()" disabled>&rarr; السابق</button>
+            <button class="btn" id="next-btn" onclick="nextSlide()">التالي &larr;</button>
+        </div>
+
+        <div class="dots-group" id="dots-container">
+            <!-- Dynamic Dots -->
+        </div>
+
+        <div class="instructions-tip">
+            <span>استخدم الأسهم </span>
+            <span class="key-btn">&rarr;</span>
+            <span class="key-btn">&larr;</span>
+            <span>في لوحة المفاتيح للتنقل</span>
+        </div>
+    </div>
+</body>
+
+</html>

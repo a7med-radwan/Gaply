@@ -33,14 +33,14 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#050811',
-                        darkCard: '#0c1220',
-                        darkBorder: '#1f2937',
+                        darkBg: '#080d1a',
+                        darkCard: '#111a2e',
+                        darkBorder: '#25334d',
                         oceanBlue: '#38bdf8',
                         oceanHover: '#0ea5e9',
                         accentTeal: '#0ea5e9',
                         textPrimary: '#ffffff',
-                        textSecondary: '#94a3b8'
+                        textSecondary: '#cbd5e1'
                     },
                     fontFamily: {
                         sans: ['"Inter"', 'sans-serif'],
@@ -58,12 +58,12 @@
 
     <style>
         :root {
-            --bg-primary: #050811;
-            --bg-card: #0c1220;
-            --bg-darkBg: #050811;
-            --border-primary: #1f2937;
+            --bg-primary: #080d1a;
+            --bg-card: #111a2e;
+            --bg-darkBg: #080d1a;
+            --border-primary: #25334d;
             --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
+            --text-secondary: #cbd5e1;
         }
 
         html.light {
@@ -77,9 +77,12 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-primary);
+            background: radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.05) 0%, transparent 55%),
+                        var(--bg-primary);
+            background-attachment: fixed;
             color: var(--text-primary);
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: background 0.3s ease, color 0.2s ease;
         }
 
         .font-display {
@@ -92,7 +95,7 @@
 
         /* Light Mode Specific Overrides */
         html.light body {
-            background-color: var(--bg-primary) !important;
+            background: var(--bg-primary) !important;
             color: var(--text-primary) !important;
         }
 

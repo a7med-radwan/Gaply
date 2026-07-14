@@ -72,12 +72,6 @@ class CareerGapAgent implements Agent, HasStructuredOutput
         Be specific, practical, and encouraging. The plan should be realistic and achievable.
         PROMPT;
     }
-
-    /**
-     * Define the structured output schema.
-     *
-     * @return array<string, mixed>
-     */
     public function schema(JsonSchema $schema): array
     {
         return [
