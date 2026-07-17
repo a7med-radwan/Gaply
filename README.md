@@ -1,136 +1,136 @@
-# Gaply - منصة التوجيه المهني الذكية وتحليل الفجوات 🚀
+# Gaply - Smart Career Guidance and Gap Analysis Platform 🚀
 
-**Gaply** هي منصة مهنية متكاملة مبنية باستخدام إطار العمل **Laravel** وتقنيات الذكاء الاصطناعي. تهدف المنصة إلى مساعدة الخريجين والباحثين عن عمل في تحليل الفجوة المهنية بين مهاراتهم الحالية ومتطلبات سوق العمل الفعلية للوظائف التي يطمحون إليها، ومن ثم توفير خطة تدريبية عملية مخصصة ومكثفة مع أسئلة مقابلات تقنية ذكية وتأهيلهم لسوق العمل.
-
----
-
-## 🌟 الميزات الأساسية للمنصة
-
-1. **لوحة التحكم ونسبة الاستعداد (Dashboard & Readiness Score):**
-   رسم بياني تفاعلي يوضح نسبة استعداد المستخدم للوظيفة المستهدفة استناداً إلى مقارنة مهاراته بمتطلبات السوق.
-
-2. **مخزن المهارات الشخصية (Skills Inventory):**
-   إدارة كاملة لمهارات المستخدم الحالية وتصنيف مستوياتها (مبتدئ، متوسط، خبير).
-
-3. **مُحسّن السيرة المهنية بالذكاء الاصطناعي (AI Bio Optimizer):**
-   أداة ذكية تعيد صياغة خبراتك البسيطة لتصبح بأسلوب قوي واحترافي موجه للموظفين وأرباب العمل بضغطة زر.
-
-4. **خطة التطوير المهني الأسبوعية (AI Career Roadmap):**
-   خطة مخصصة مقسمة أسبوعياً تحتوي على مصادر مقترحة (كتب، كورسات) ومشاريع برمجية تطبيقية لسد الثغرات والمهارات المفقودة.
-
-5. **مدرب المقابلات الذكي (AI Interview Coach):**
-   توليد تلقائي للأسئلة التقنية المتوقعة وإجاباتها النموذجية بناءً على المهارات المفقودة والوظيفة المستهدفة.
-
-6. **واجهة البرمجة الذكية (API V1 - Sanctum Auth):**
-   نقاط نهاية (Endpoints) مخصصة ومحمية بالكامل لتمكين التطبيقات الخارجية أو الجوال من استهلاك ميزات المنصة.
+**Gaply** is a comprehensive professional platform built using the **Laravel** framework and AI technologies. The platform aims to help graduates and job seekers analyze the professional gap between their current skills and the actual requirements of the job market for their target roles. It then provides a personalized and intensive weekly career roadmap, complete with smart technical interview questions to prepare them for the job market.
 
 ---
 
-## 🛠️ البنية البرمجية والتقنيات المستخدمة (Technical Stack)
+## 🌟 Key Features
 
-* **إطار العمل الأساسي:** Laravel 13 (PHP 8.4)
-* **قاعدة البيانات:** SQLite
-* **الذكاء الاصطناعي:** Laravel AI SDK (`laravel/ai`) لإدارة عملاء الذكاء الاصطناعي وتوليد الاستجابات المهيكلة.
-* **إدارة الحماية والتسجيل:** Laravel Fortify و Laravel Sanctum (لحماية الـ APIs).
-* **إدارة المهام والعمليات الطويلة:** Laravel Jobs & Queues لمعالجة اتصالات الـ AI الثقيلة في الخلفية لتجنب تجميد الواجهات.
-* **نمط التصميم وعزل المنطق (Architecture):**
-  * استخدام طبقة الخدمات (**Service Layer**) لفصل منطق الأعمال المعقد عن الـ Controllers.
-  * استخدام **Database Transactions** لضمان دقة وسلامة البيانات عند الحفظ المتتابع.
-  * استخدام **Eloquent Observers** لإدارة دورة حياة النماذج تلقائياً (مثل حذف الخطط القديمة عند تنشيط خطة جديدة).
-  * استخدام **Query Scopes** و **Custom Enums** لتسهيل تنظيف وفلترة البيانات.
+1. **Dashboard & Readiness Score:**
+   An interactive chart that visualizes the user's readiness level for their target job by comparing their skills with current market requirements.
+
+2. **Skills Inventory:**
+   Complete management of user skills, categorized by level (Beginner, Intermediate, Expert).
+
+3. **AI Bio Optimizer:**
+   A smart tool that rephrases simple work experiences into a strong, professional bio tailored for recruiters and employers with a single click.
+
+4. **AI Career Roadmap (Weekly):**
+   A personalized, weekly development plan containing suggested resources (books, courses) and practical projects to bridge skill gaps.
+
+5. **AI Interview Coach:**
+   Automated generation of expected technical interview questions and model answers based on the user's missing skills and target job.
+
+6. **Smart API V1 (Sanctum Auth):**
+   Fully protected endpoints enabling external or mobile applications to consume the platform's features.
 
 ---
 
-## 🚀 كيفية التثبيت والتشغيل المحلي
+## 🛠️ Tech Stack & Architecture
 
-### المتطلبات الأساسية
+* **Framework:** Laravel 13 (PHP 8.4)
+* **Database:** SQLite
+* **Artificial Intelligence:** Laravel AI SDK (`laravel/ai`) to manage AI clients and generate structured outputs.
+* **Authentication & API Protection:** Laravel Fortify and Laravel Sanctum.
+* **Queue Management:** Laravel Jobs & Queues to handle heavy AI operations in the background, keeping the user interface fast and responsive.
+* **Design Patterns & Architecture:**
+  * **Service Layer:** Decoupled business logic from Controllers.
+  * **Database Transactions:** Ensures data integrity during sequential saves.
+  * **Eloquent Observers:** Automated model lifecycle management (e.g., deleting old plans when a new plan is activated).
+  * **Query Scopes & Custom Enums:** For clean, readable code and efficient database filtering.
+
+---
+
+## 🚀 Installation & Local Setup
+
+### Prerequisites
 * PHP >= 8.4
 * Composer
 * Node.js & NPM
 
-### خطوات التثبيت
+### Setup Steps
 
-1. **استنساخ المستودع (Clone):**
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/a7med-radwan/Gaply.git
    cd Gaply
    ```
 
-2. **تثبيت الاعتمادات (Dependencies):**
+2. **Install dependencies:**
    ```bash
    composer install
    npm install
    ```
 
-3. **إعداد ملف البيئة:**
-   قم بنسخ ملف البيئة التجريبي:
+3. **Configure environment file:**
+   Copy the example environment file:
    ```bash
    cp .env.example .env
    ```
-   *تأكد من وضع مفتاح الـ API الخاص بـ Gemini أو مزود الذكاء الاصطناعي المعتمد في ملف `.env`.*
+   *Make sure to configure your Gemini API key (or other supported AI providers) in the `.env` file.*
 
-4. **توليد مفتاح التطبيق وتشغيل الهجرات:**
+4. **Generate application key and run migrations:**
    ```bash
    php artisan key:generate
    php artisan migrate --seed
    ```
 
-5. **بناء أصول الواجهة (Frontend Assets):**
+5. **Build frontend assets:**
    ```bash
    npm run build
-   # أو للتشغيل التطويري المستمر:
+   # Or for development:
    npm run dev
    ```
 
-6. **تشغيل سيرفر التطوير المحلي وعامل المهام الخلفية:**
-   في نافذتي Terminal منفصلتين، شغّل:
-   * سيرفر الويب:
+6. **Start local servers:**
+   In two separate terminal windows, run:
+   * Web Server:
      ```bash
      php artisan serve
      ```
-   * خادم معالجة المهام (Queue Worker):
+   * Queue Worker:
      ```bash
      php artisan queue:work
      ```
 
 ---
 
-## 🧪 الاختبارات البرمجية (Testing)
+## 🧪 Testing
 
-تمت تغطية المنصة بنظام اختبارات آلية ذكي وبسيط للتحقق من سلامة الأكواد ومقاومة الأخطاء التراجعية:
+The platform features automated unit and feature tests to ensure stability and prevent regressions:
 
-* **اختبارات الوحدة (Unit Tests):** تغطي دوال ومتحكمات الـ [CareerPlan](file:///e:/UCAS/Code/Gaply/app/Models/CareerPlan.php) والـ [CareerPlanObserver](file:///e:/UCAS/Code/Gaply/app/Observers/CareerPlanObserver.php).
-* **اختبارات الميزات للـ API (Feature Tests):** تتحقق من سلامة وصلاحيات مسارات الـ API المحمية.
+* **Unit Tests:** Verify the models and logic for [CareerPlan](file:///e:/UCAS/Code/Gaply/app/Models/CareerPlan.php) and [CareerPlanObserver](file:///e:/UCAS/Code/Gaply/app/Observers/CareerPlanObserver.php).
+* **Feature Tests:** Check endpoint access and authorization for protected API routes.
 
-لتشغيل الاختبارات:
+To run tests:
 ```bash
-# لتشغيل جميع الاختبارات
+# Run all tests
 php artisan test
 
-# لتشغيل اختبارات الوحدة فقط
+# Run Unit tests only
 php artisan test --filter=CareerPlanTest
 
-# لتشغيل اختبارات الـ API فقط
+# Run API Feature tests only
 php artisan test --filter=CareerPlanApiTest
 ```
 
 ---
 
-## 📑 توثيق الـ API (الإصدار الأول V1)
+## 📑 API Documentation (V1)
 
-المسارات محمية بـ **Laravel Sanctum** ويجب تمرير الـ Token في ترويسة الطلب كـ `Authorization: Bearer <token>`.
+Endpoints are protected by **Laravel Sanctum**. You must pass the token in the request header as `Authorization: Bearer <token>`.
 
-### 1. توليد Token تجريبي (عبر Tinker):
+### 1. Generate a Test Token (via Tinker):
 ```bash
 php artisan tinker --execute "App\Models\User::first()->createToken('token')->plainTextToken;"
 ```
 
-### 2. نقاط النهاية (Endpoints):
+### 2. Endpoints:
 
-* **إنشاء خريطة طريق مهنية جديدة (Roadmap):**
-  * **الرابط:** `POST /api/v1/career-plans/generate`
-  * **الاستجابة:** `202 Accepted`
-  * **مثال الاستجابة:**
+* **Generate a New Career Roadmap:**
+  * **Endpoint:** `POST /api/v1/career-plans/generate`
+  * **Response:** `202 Accepted`
+  * **Response Example:**
     ```json
     {
         "message": "Career gap analysis started in the background.",
@@ -142,6 +142,6 @@ php artisan tinker --execute "App\Models\User::first()->createToken('token')->pl
     }
     ```
 
-* **جلب خريطة الطريق النشطة الحالية:**
-  * **الرابط:** `GET /api/v1/career-plans/active`
-  * **الاستجابة:** `200 OK` (أو `404` في حال لم تكتمل المعالجة بعد).
+* **Get Current Active Roadmap:**
+  * **Endpoint:** `GET /api/v1/career-plans/active`
+  * **Response:** `200 OK` (or `404 Not Found` if processing is not yet complete).
