@@ -17,7 +17,9 @@ class CareerPlanController extends Controller
     /**
      * Create a new CareerPlanController instance.
      */
-    public function __construct(protected CareerPlanService $careerPlanService) {}
+    public function __construct(protected CareerPlanService $careerPlanService)
+    {
+    }
 
     /**
      * Display the user's latest career plan.
@@ -89,6 +91,18 @@ class CareerPlanController extends Controller
     }
 
     /**
+     * Display all missing skills for the user.
+     */
+    public function missingSkills(): View
+    {
+        $user = auth()->user();
+        $careerPlan = $user->careerPlans()->active()->latest()->first();
+        $missingSkills = $careerPlan?->missing_skills ?? [];
+
+        return view('career-plan.missing-skills', compact('user', 'missingSkills', 'careerPlan'));
+    }
+
+    /**
      * Get AI generated interview questions for a missing skill.
      */
     public function interviewQuestions(Request $request): View|RedirectResponse
@@ -121,17 +135,5 @@ class CareerPlanController extends Controller
         GenerateInterviewQuestionsJob::dispatch($skillName, $user->target_job);
 
         return view('career-plan.questions-loading', compact('skillName'));
-    }
-
-    /**
-     * Display all missing skills for the user.
-     */
-    public function missingSkills(): View
-    {
-        $user = auth()->user();
-        $careerPlan = $user->careerPlans()->active()->latest()->first();
-        $missingSkills = $careerPlan?->missing_skills ?? [];
-
-        return view('career-plan.missing-skills', compact('user', 'missingSkills', 'careerPlan'));
     }
 }
