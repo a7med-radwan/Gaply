@@ -12,6 +12,8 @@ class CareerPlanTest extends TestCase
 {
     use RefreshDatabase;
 
+    // php artisan test --filter=CareerPlanTest
+
     public function test_it_can_determine_its_status(): void
     {
         $user = User::factory()->create();
