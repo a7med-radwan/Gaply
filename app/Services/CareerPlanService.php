@@ -8,6 +8,7 @@ use App\Models\CareerPlan;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\GenerateCareerPlanJob;
+use App\Jobs\GenerateInterviewQuestionsJob;
 use Illuminate\Support\Facades\DB;
 
 class CareerPlanService
@@ -42,18 +43,30 @@ class CareerPlanService
     }
 
     /**
-     * Generate structured interview questions for a missing skill.
+     * Get AI generated interview questions for a missing skill (via Cache / Background Job).
      */
-    public function generateInterviewQuestions(string $skillName, string $targetJob): array
+    public function getInterviewQuestions(string $skillName, string $targetJob): array
     {
-        $cacheKey = 'interview_questions:' . md5(strtolower($skillName) . '_' . strtolower($targetJob));
+        $hash = md5(strtolower($skillName) . '_' . strtolower($targetJob));
+        $cacheKey = 'interview_questions:' . $hash;
+        $pendingKey = 'interview_questions_pending:' . $hash;
 
-        return Cache::remember($cacheKey, now()->addDay(), function () use ($skillName, $targetJob) {
-            $response = InterviewQuestionsAgent::make($skillName, $targetJob)->prompt(
-                "Generate questions for skill: {$skillName} and target job: {$targetJob}."
-            );
+        // 1. If questions are cached, return them
+        if ($questions = Cache::get($cacheKey)) {
+            return [
+                'status' => 'cached',
+                'questions' => $questions,
+            ];
+        }
 
-            return $response['questions'] ?? [];
-        });
+        // 2. If not pending, dispatch the generation job
+        if (!Cache::has($pendingKey)) {
+            Cache::put($pendingKey, true, now()->addMinutes(5));
+            GenerateInterviewQuestionsJob::dispatch($skillName, $targetJob);
+        }
+
+        return [
+            'status' => 'pending',
+        ];
     }
 }

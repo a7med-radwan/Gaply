@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\CareerPlanStatus;
 use App\Models\CareerPlan;
 use App\Services\CareerPlanService;
-use App\Jobs\GenerateInterviewQuestionsJob;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -115,24 +113,12 @@ class CareerPlanController extends Controller
                 ->withErrors(['error' => 'Invalid parameters or missing target job.']);
         }
 
-        $hash = md5(strtolower($skillName) . '_' . strtolower($user->target_job));
-        $cacheKey = 'interview_questions:' . $hash;
-        $pendingKey = 'interview_questions_pending:' . $hash;
+        $result = $this->careerPlanService->getInterviewQuestions($skillName, $user->target_job);
 
-        // 1. If cached already, show them instantly
-        if (Cache::has($cacheKey)) {
-            $questions = Cache::get($cacheKey);
+        if ($result['status'] === 'cached') {
+            $questions = $result['questions'];
             return view('career-plan.questions', compact('user', 'skillName', 'questions'));
         }
-
-        // 2. If already pending (background job runs), show loading view
-        if (Cache::has($pendingKey)) {
-            return view('career-plan.questions-loading', compact('skillName'));
-        }
-
-        // 3. Set pending flag for 5 minutes and dispatch Job
-        Cache::put($pendingKey, true, now()->addMinutes(5));
-        GenerateInterviewQuestionsJob::dispatch($skillName, $user->target_job);
 
         return view('career-plan.questions-loading', compact('skillName'));
     }
