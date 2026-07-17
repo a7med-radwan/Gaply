@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="عرض تقديمي تفاعلي لمشروع Gaply - منصة ذكاء اصطناعي لتحليل الفجوة المهنية وتوجيه الخريجين، مقدمة من أحمد هيثم رضوان ضمن حاضنة UCAS للابتكار.">
+    <meta name="author" content="Ahmed Haitham Radwan">
+    <meta property="og:title" content="Gaply - عرض تقديمي تفاعلي">
+    <meta property="og:description" content="منصة ذكاء اصطناعي لتحليل الفجوة المهنية وتوجيه الخريجين">
     <title>مشروع Gaply - العرض التقديمي التفاعلي</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,15 +22,20 @@
 
     <!-- TOP HEADER -->
     <header>
-        <div class="header-left">
-            <div class="logo">Gaply <span>.</span></div>
-            <button class="btn-theme" onclick="toggleTheme()" title="تغيير الوضع الرسومي">
-                <span class="theme-icon">🌙</span>
-            </button>
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progress-bar"></div>
         </div>
-        <div class="nav-info">
-            <span class="badge-live">عرض حي للمشروع</span>
-            <span>حاضنة UCAS للابتكار المهني</span>
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="logo">Gaply <span>.</span></div>
+                <button class="btn-theme" onclick="toggleTheme()" title="تغيير الوضع الرسومي">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+            <div class="nav-info">
+                <span class="badge-live">عرض حي للمشروع</span>
+                <span class="nav-ucas">حاضنة UCAS للابتكار المهني</span>
+            </div>
         </div>
     </header>
 
@@ -214,7 +223,9 @@
                         <li><strong>الوظائف والمهام الخلفية (Queues & Jobs)</strong>: معالجة تحليلات الذكاء الاصطناعي الثقيلة في الخلفية عبر الـ Jobs لتجنب تجميد وتأخير المتصفح للمستخدم.</li>
                         <li><strong>نظام الكاش (Caching)</strong>: تخزين أسئلة وأجوبة المقابلات المتكررة لتقليل استهلاك الـ API للذكاء الاصطناعي وتسريع الاستجابة.</li>
                         <li><strong>مراقبة قواعد البيانات (Observers)</strong>: تنظيف ومسح البيانات والخطط القديمة تلقائياً فورياً عند التحديث.</li>
+                        <li><strong>المعاملات الآمنة (Database Transactions)</strong>: تطبيق الـ DB Transactions لضمان حفظ بيانات الخطة المهنية وإطلاق وظائف الخلفية بشكل ذري وآمن (Atomic).</li>
                         <li><strong>الـ Scopes والـ Mutators والـ Enums</strong>: لضمان جودة ونظافة وأمن البيانات المدخلة والمستخرجة.</li>
+                        <li><strong>اختبارات الوحدة (Unit Testing)</strong>: كتابة اختبارات آلية ذكية باستخدام PHPUnit للتحقق من سلامة منطق الأعمال وقواعد المراقبة وحذف الخطط القديمة تلقائياً.</li>
                     </ul>
                 </div>
             </div>
@@ -222,10 +233,12 @@
                 <div class="visual-tabs">
                     <button class="tab-btn active" onclick="switchVisual(this, 0)">الـ Services والـ Jobs</button>
                     <button class="tab-btn" onclick="switchVisual(this, 1)">العميل والـ Schema</button>
+                    <button class="tab-btn" onclick="switchVisual(this, 2)">نتائج اختبارات الوحدة (Unit Tests)</button>
                 </div>
                 <div class="visual-images">
                     <img src="image/Gaply/code.png" alt="كود النظام النظيف 1" class="tab-img active">
                     <img src="image/Gaply/code2.png" alt="كود النظام النظيف 2" class="tab-img">
+                    <img src="image/Gaply/Test.png" alt="نتائج اختبارات الوحدة" class="tab-img">
                 </div>
             </div>
         </div>
@@ -239,15 +252,18 @@
             <button class="btn" id="next-btn" onclick="nextSlide()">التالي &larr;</button>
         </div>
 
-        <div class="dots-group" id="dots-container">
-            <!-- Dynamic Dots -->
+        <div class="controls-center">
+            <div class="dots-group" id="dots-container">
+                <!-- Dynamic Dots -->
+            </div>
+            <div class="slide-counter" id="slide-counter">١ / ٧</div>
         </div>
 
         <div class="instructions-tip">
             <span>استخدم الأسهم </span>
             <span class="key-btn">&rarr;</span>
             <span class="key-btn">&larr;</span>
-            <span>في لوحة المفاتيح للتنقل</span>
+            <span class="tip-text">للتنقل</span>
         </div>
     </div>
 </body>
