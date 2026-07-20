@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\CareerPlanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Google OAuth Routes
+Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
 Route::middleware('auth')->group(function () {
     // Dashboard route
@@ -33,4 +38,3 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/optimize-bio', [ProfileController::class, 'optimizeBio'])->name('profile.optimize-bio');
     Route::get('/career-plan/interview-questions', [CareerPlanController::class, 'interviewQuestions'])->name('career-plan.interview-questions');
 });
-

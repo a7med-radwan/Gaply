@@ -21,8 +21,13 @@
                     class="rounded-2xl border border-darkBorder/60 bg-darkCard p-6 shadow-xl flex flex-col items-center justify-center text-center space-y-5">
                     <div class="relative group">
                         <!-- Preview Image -->
+                        @php
+                            $editAvatarUrl = $user->profile_image
+                                ? (str_starts_with($user->profile_image, 'http') ? $user->profile_image : Storage::url($user->profile_image))
+                                : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=38bdf8&color=fff&size=128';
+                        @endphp
                         <img id="profile-preview"
-                            src="{{ $user->profile_image ? Storage::url($user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=38bdf8&color=fff&size=128' }}"
+                            src="{{ $editAvatarUrl }}"
                             alt="{{ $user->name }}"
                             class="w-32 h-32 rounded-full object-cover border-2 border-darkBorder group-hover:border-oceanBlue/50 transition-all duration-300 shadow-glowBlue">
 
