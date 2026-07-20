@@ -54,7 +54,7 @@ class GoogleAuthController extends Controller
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
                 'google_id' => $googleUser->getId(),
-                'username' => Str::slug($googleUser->getName()).'-'.Str::random(5),
+                'username' => $this->generateUsername($googleUser->getName()),
                 'profile_image' => $avatarPath,
                 'email_verified_at' => now(),
                 'password' => null,
@@ -68,6 +68,7 @@ class GoogleAuthController extends Controller
 
     /**
      * Download Google Avatar and save it locally in public storage.
+     * Only downloads from trusted Google domains.
      */
     protected function downloadGoogleAvatar(?string $url): ?string
     {
@@ -75,8 +76,17 @@ class GoogleAuthController extends Controller
             return null;
         }
 
+        // Only trust Google's own CDN domains
+        $parsed = parse_url($url);
+        $host = $parsed['host'] ?? '';
+        $trustedDomains = ['googleusercontent.com', 'googleapis.com'];
+        $isTrusted = collect($trustedDomains)->contains(fn ($d) => str_ends_with($host, $d));
+
+        if (! $isTrusted) {
+            return null;
+        }
+
         try {
-            // Ensure directory exists in public disk
             if (! Storage::disk('public')->exists('profile_images')) {
                 Storage::disk('public')->makeDirectory('profile_images');
             }
@@ -89,9 +99,26 @@ class GoogleAuthController extends Controller
                 return $fileName;
             }
         } catch (\Exception $e) {
-            return $url;
+            return null;
         }
 
-        return $url;
+        return null;
+    }
+
+    /**
+     * Generate a unique username based on Google display name.
+     */
+    protected function generateUsername(string $name): string
+    {
+        $base = Str::slug($name);
+        $username = $base.'-'.Str::random(5);
+
+        $attempts = 0;
+        while (User::where('username', $username)->exists() && $attempts < 5) {
+            $username = $base.'-'.Str::random(6);
+            $attempts++;
+        }
+
+        return $username;
     }
 }

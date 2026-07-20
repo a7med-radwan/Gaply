@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap&font-display=swap"
         rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -246,31 +246,36 @@
                     Navigation</p>
 
                 <a href="{{ route('dashboard') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('dashboard') ? 'bg-oceanBlue text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150
+                        {{ request()->routeIs('dashboard') ? 'text-white bg-darkBg/60 border-l-2 border-oceanBlue' : 'text-textSecondary hover:text-white hover:bg-darkBg/40' }}">
                     <span class="material-symbols-outlined text-lg">space_dashboard</span>
                     Dashboard
                 </a>
 
                 <a href="{{ route('profile.show') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('profile.*') ? 'bg-oceanBlue text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150
+                        {{ request()->routeIs('profile.*') ? 'text-white bg-darkBg/60 border-l-2 border-oceanBlue' : 'text-textSecondary hover:text-white hover:bg-darkBg/40' }}">
                     <span class="material-symbols-outlined text-lg">person</span>
                     My Profile
                 </a>
 
                 <a href="{{ route('skills.index') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('skills.*') ? 'bg-oceanBlue text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150
+                        {{ request()->routeIs('skills.*') ? 'text-white bg-darkBg/60 border-l-2 border-oceanBlue' : 'text-textSecondary hover:text-white hover:bg-darkBg/40' }}">
                     <span class="material-symbols-outlined text-lg">bolt</span>
                     My Skills
                 </a>
 
                 <a href="{{ route('career-plan.index') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('career-plan.index') ? 'bg-accentTeal text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150
+                        {{ request()->routeIs('career-plan.index') ? 'text-white bg-darkBg/60 border-l-2 border-accentTeal' : 'text-textSecondary hover:text-white hover:bg-darkBg/40' }}">
                     <span class="material-symbols-outlined text-lg">analytics</span>
                     Career Plan
                 </a>
 
                 <a href="{{ route('career-plan.missing-skills') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group {{ request()->routeIs('career-plan.missing-skills') ? 'bg-oceanBlue text-white shadow-premium' : 'text-textSecondary hover:text-white hover:bg-darkBg/50' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-150
+                        {{ request()->routeIs('career-plan.missing-skills') ? 'text-white bg-darkBg/60 border-l-2 border-oceanBlue' : 'text-textSecondary hover:text-white hover:bg-darkBg/40' }}">
                     <span class="material-symbols-outlined text-lg">running_with_errors</span>
                     Missing Skills
                 </a>
